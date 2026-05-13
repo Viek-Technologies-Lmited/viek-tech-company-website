@@ -48,7 +48,7 @@ const services = [
       "Performance Optimization"
     ],
     technologies: ["React", "Next.js", "Node.js", "TypeScript", "PostgreSQL", "MongoDB"],
-    image: "/images/service-web.jpg"
+    image: "/images/web-development.jpeg"
   },
   {
     id: "mobile-development",
@@ -65,7 +65,7 @@ const services = [
       "App Maintenance & Support"
     ],
     technologies: ["React Native", "Flutter", "Swift", "Kotlin", "Firebase", "AWS"],
-    image: "/images/service-mobile.jpg"
+    image: "/images/app-development.jpeg"
   },
   {
     id: "ui-ux-design",
@@ -82,7 +82,7 @@ const services = [
       "Interaction Design"
     ],
     technologies: ["Figma", "Adobe XD", "Sketch", "InVision", "Principle", "Framer"],
-    image: "/images/service-design.jpg"
+    image: "/images/ui-ux.jpeg"
   },
   {
     id: "cloud-solutions",
@@ -99,7 +99,7 @@ const services = [
       "24/7 Monitoring"
     ],
     technologies: ["AWS", "Google Cloud", "Azure", "Docker", "Kubernetes", "Terraform"],
-    image: "/images/service-cloud.jpg"
+    image: "/images/cloud.jpeg"
   },
   {
     id: "cybersecurity",
@@ -116,7 +116,7 @@ const services = [
       "Compliance Consulting"
     ],
     technologies: ["OWASP", "ISO 27001", "SOC 2", "GDPR", "PCI DSS", "NIST"],
-    image: "/images/service-security.jpg"
+    image: "/images/cybersecurity.jpeg"
   },
   {
     id: "data-analytics",
@@ -133,7 +133,7 @@ const services = [
       "Data Pipeline Development"
     ],
     technologies: ["Python", "TensorFlow", "Power BI", "Tableau", "Apache Spark", "BigQuery"],
-    image: "/images/service-data.jpg"
+    image: "/images/data-analysis.jpeg"
   }
 ]
 

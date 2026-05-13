@@ -1,10 +1,24 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { Menu, ChevronDown, GraduationCap, Code, Smartphone, Database, Shield, BookOpen, Users, Star, MessageSquare, Briefcase } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import {
+  Menu,
+  ChevronDown,
+  GraduationCap,
+  Code,
+  Smartphone,
+  Database,
+  Shield,
+  BookOpen,
+  Users,
+  Star,
+  MessageSquare,
+  Briefcase,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,55 +26,61 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
-import { cn } from "@/lib/utils"
+} from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
 
 const academyCourses = [
   {
     title: "Full Stack Web Development",
     href: "/academy/full-stack-web-development",
-    description: "Master frontend and backend technologies to build complete web applications.",
+    description:
+      "Master frontend and backend technologies to build complete web applications.",
     icon: Code,
     duration: "16 Weeks",
-    level: "Beginner to Advanced"
+    level: "Beginner to Advanced",
   },
   {
     title: "Mobile App Development",
     href: "/academy/mobile-app-development",
-    description: "Build cross-platform mobile apps using React Native and Flutter.",
+    description:
+      "Build cross-platform mobile apps using React Native and Flutter.",
     icon: Smartphone,
     duration: "12 Weeks",
-    level: "Intermediate"
+    level: "Intermediate",
   },
   {
     title: "Data Science & Analytics",
     href: "/academy/data-science",
-    description: "Learn Python, machine learning, and data visualization techniques.",
+    description:
+      "Learn Python, machine learning, and data visualization techniques.",
     icon: Database,
     duration: "14 Weeks",
-    level: "Intermediate"
+    level: "Intermediate",
   },
   {
     title: "Cybersecurity Fundamentals",
     href: "/academy/cybersecurity",
-    description: "Protect systems and networks from digital threats and attacks.",
+    description:
+      "Protect systems and networks from digital threats and attacks.",
     icon: Shield,
     duration: "10 Weeks",
-    level: "Beginner"
+    level: "Beginner",
   },
-]
+];
 
 const testimonialLinks = [
   {
     title: "Student Success Stories",
     href: "/testimonials/students",
-    description: "Hear from graduates who transformed their careers through our academy.",
+    description:
+      "Hear from graduates who transformed their careers through our academy.",
     icon: GraduationCap,
   },
   {
     title: "Client Reviews",
     href: "/testimonials/clients",
-    description: "See what businesses say about our software development services.",
+    description:
+      "See what businesses say about our software development services.",
     icon: Briefcase,
   },
   {
@@ -75,42 +95,48 @@ const testimonialLinks = [
     description: "Watch real stories from our community members.",
     icon: MessageSquare,
   },
-]
+];
 
 const servicesLinks = [
   {
     title: "Web Development",
     href: "/services/web-development",
-    description: "Custom websites and web applications built with modern technologies.",
+    description:
+      "Custom websites and web applications built with modern technologies.",
   },
   {
     title: "Mobile App Development",
     href: "/services/mobile-development",
-    description: "Native and cross-platform mobile applications for iOS and Android.",
+    description:
+      "Native and cross-platform mobile applications for iOS and Android.",
   },
   {
     title: "UI/UX Design",
     href: "/services/ui-ux-design",
-    description: "User-centered design solutions that enhance digital experiences.",
+    description:
+      "User-centered design solutions that enhance digital experiences.",
   },
   {
     title: "Tech Consulting",
     href: "/services/consulting",
     description: "Strategic technology guidance for digital transformation.",
   },
-]
+];
 
 export function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinkStyles =
+    "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50";
 
   return (
     <header
@@ -118,17 +144,27 @@ export function Navbar() {
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
           ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-border"
-          : "bg-white"
+          : "bg-white",
       )}
     >
       <nav className="container mx-auto px-4 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/25">
-            <span className="text-primary-foreground font-bold text-2xl">V</span>
+          <div className="relative w-12 h-12 rounded-xl overflow-hidden shadow-lg shadow-primary/25">
+            <Image
+              src="/images/logo2.jpeg"
+              alt="Logo"
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-xl text-foreground">Viek<span className="text-primary">Tech</span></span>
-            <span className="text-xs text-muted-foreground">Innovating with Purpose</span>
+            <span className="font-bold text-xl text-foreground">
+              Viek<span className="text-primary">Tech</span>
+            </span>
+            <span className="text-xs text-muted-foreground">
+              Innovating with Purpose
+            </span>
           </div>
         </Link>
 
@@ -137,27 +173,21 @@ export function Navbar() {
           <NavigationMenu>
             <NavigationMenuList className="gap-1">
               <NavigationMenuItem>
-                <Link href="/">
-                  {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
-                  }
-                  <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    Home
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink asChild className={navLinkStyles}>
+                  <Link href="/">Home</Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <Link href="/about">
-                  {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
-                  }
-                  <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    About Us
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink asChild className={navLinkStyles}>
+                  <Link href="/about">About Us</Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent">Services</NavigationMenuTrigger>
+                <NavigationMenuTrigger className="bg-transparent">
+                  Services
+                </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                     {servicesLinks.map((service) => (
@@ -167,7 +197,9 @@ export function Navbar() {
                             href={service.href}
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                           >
-                            <div className="text-sm font-medium leading-none">{service.title}</div>
+                            <div className="text-sm font-medium leading-none">
+                              {service.title}
+                            </div>
                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                               {service.description}
                             </p>
@@ -190,7 +222,9 @@ export function Navbar() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent">Academy</NavigationMenuTrigger>
+                <NavigationMenuTrigger className="bg-transparent">
+                  Academy
+                </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[600px] md:grid-cols-2 lg:w-[700px]">
                     {academyCourses.map((course) => (
@@ -205,13 +239,19 @@ export function Navbar() {
                                 <course.icon className="h-5 w-5 text-primary" />
                               </div>
                               <div className="space-y-1">
-                                <div className="text-sm font-medium leading-none">{course.title}</div>
+                                <div className="text-sm font-medium leading-none">
+                                  {course.title}
+                                </div>
                                 <p className="text-xs text-muted-foreground line-clamp-2">
                                   {course.description}
                                 </p>
                                 <div className="flex gap-2 pt-1">
-                                  <span className="text-xs bg-secondary px-2 py-0.5 rounded-full">{course.duration}</span>
-                                  <span className="text-xs bg-secondary px-2 py-0.5 rounded-full">{course.level}</span>
+                                  <span className="text-xs bg-secondary px-2 py-0.5 rounded-full">
+                                    {course.duration}
+                                  </span>
+                                  <span className="text-xs bg-secondary px-2 py-0.5 rounded-full">
+                                    {course.level}
+                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -234,7 +274,9 @@ export function Navbar() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent">Testimonials</NavigationMenuTrigger>
+                <NavigationMenuTrigger className="bg-transparent">
+                  Testimonials
+                </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                     {testimonialLinks.map((item) => (
@@ -249,7 +291,9 @@ export function Navbar() {
                                 <item.icon className="h-4 w-4 text-primary" />
                               </div>
                               <div className="space-y-1">
-                                <div className="text-sm font-medium leading-none">{item.title}</div>
+                                <div className="text-sm font-medium leading-none">
+                                  {item.title}
+                                </div>
                                 <p className="text-xs text-muted-foreground line-clamp-2">
                                   {item.description}
                                 </p>
@@ -274,23 +318,15 @@ export function Navbar() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <Link href="/blog">
-                  {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
-                  }
-                  <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    Blog
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink asChild className={navLinkStyles}>
+                  <Link href="/blog">Blog</Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <Link href="/contact">
-                  {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
-                  }
-                  <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    Contact
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink asChild className={navLinkStyles}>
+                  <Link href="/contact">Contact</Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
@@ -299,7 +335,7 @@ export function Navbar() {
         <div className="hidden lg:flex items-center gap-3">
           <Link href="/admin/login">
             <Button variant="ghost" size="sm">
-              Admin
+              
             </Button>
           </Link>
           <Link href="/contact">
@@ -317,7 +353,10 @@ export function Navbar() {
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-[320px] sm:w-[400px] overflow-y-auto">
+          <SheetContent
+            side="right"
+            className="w-[320px] sm:w-[400px] overflow-y-auto"
+          >
             <div className="flex flex-col gap-6 mt-8">
               <Link
                 href="/"
@@ -333,9 +372,11 @@ export function Navbar() {
               >
                 About Us
               </Link>
-              
+
               <div className="space-y-3">
-                <span className="text-lg font-medium text-foreground">Services</span>
+                <span className="text-lg font-medium text-foreground">
+                  Services
+                </span>
                 <div className="pl-4 space-y-2 border-l-2 border-border">
                   {servicesLinks.map((service) => (
                     <Link
@@ -351,7 +392,9 @@ export function Navbar() {
               </div>
 
               <div className="space-y-3">
-                <span className="text-lg font-medium text-foreground">Academy</span>
+                <span className="text-lg font-medium text-foreground">
+                  Academy
+                </span>
                 <div className="pl-4 space-y-2 border-l-2 border-border">
                   {academyCourses.map((course) => (
                     <Link
@@ -367,7 +410,9 @@ export function Navbar() {
               </div>
 
               <div className="space-y-3">
-                <span className="text-lg font-medium text-foreground">Testimonials</span>
+                <span className="text-lg font-medium text-foreground">
+                  Testimonials
+                </span>
                 <div className="pl-4 space-y-2 border-l-2 border-border">
                   {testimonialLinks.map((item) => (
                     <Link
@@ -404,9 +449,7 @@ export function Navbar() {
                   </Button>
                 </Link>
                 <Link href="/contact" onClick={() => setIsOpen(false)}>
-                  <Button className="w-full">
-                    Get Started
-                  </Button>
+                  <Button className="w-full">Get Started</Button>
                 </Link>
               </div>
             </div>

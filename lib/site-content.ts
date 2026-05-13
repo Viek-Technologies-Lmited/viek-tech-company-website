@@ -168,6 +168,6 @@ export const defaultContent: SiteContent = {
   contact: {
     email: "info@viektech.com",
     phone: "+233 XX XXX XXXX",
-    address: "Accra, Ghana"
+    address: "Lagos, Nigeria"
   }
 }

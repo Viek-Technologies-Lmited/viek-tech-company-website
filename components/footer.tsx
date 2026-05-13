@@ -1,10 +1,19 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Facebook, Twitter, Linkedin, Instagram, Youtube, Mail, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
+import Link from "next/link";
+import Image from "next/image"; // Import the Image component
+import {
+  Facebook,
+  Twitter,
+  Linkedin,
+  Instagram,
+  Youtube,
+  Mail,
+  ArrowRight,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 
 const quickLinks = [
   { href: "#services", label: "Services" },
@@ -12,7 +21,7 @@ const quickLinks = [
   { href: "#academy", label: "Academy" },
   { href: "#testimonials", label: "Testimonials" },
   { href: "#contact", label: "Contact" },
-]
+];
 
 const services = [
   { href: "#services", label: "Web Development" },
@@ -20,13 +29,13 @@ const services = [
   { href: "#services", label: "UI/UX Design" },
   { href: "#services", label: "Tech Training" },
   { href: "#services", label: "Consulting" },
-]
+];
 
 const legal = [
   { href: "/privacy-policy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms & Conditions" },
   { href: "/cookies", label: "Cookie Policy" },
-]
+];
 
 const socialLinks = [
   { href: "#", icon: Facebook, label: "Facebook" },
@@ -34,7 +43,7 @@ const socialLinks = [
   { href: "#", icon: Linkedin, label: "LinkedIn" },
   { href: "#", icon: Instagram, label: "Instagram" },
   { href: "#", icon: Youtube, label: "YouTube" },
-]
+];
 
 export function Footer() {
   return (
@@ -43,17 +52,29 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand Column */}
           <div className="lg:col-span-2 space-y-6">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xl">V</span>
+            <Link href="/" className="flex items-center gap-3">
+              {/* Added Logo Image here */}
+              <div className="relative w-12 h-12 overflow-hidden rounded-lg">
+                <Image
+                  src="/images/logo2.jpeg"
+                  alt="ViekTech Logo"
+                  fill
+                  className="object-contain"
+                />
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-lg text-background">Viek<span className="text-primary">Tech</span></span>
-                <span className="text-[10px] text-background/60 -mt-1">Innovating with Purpose</span>
+                <span className="font-bold text-xl tracking-tight text-background">
+                  Viek<span className="text-primary">Tech</span>
+                </span>
+                <span className="text-[10px] text-background/60 uppercase tracking-widest -mt-1">
+                  Innovating with Purpose
+                </span>
               </div>
             </Link>
             <p className="text-background/70 leading-relaxed max-w-sm">
-              A dual-purpose tech hub and academy specializing in building purposeful digital solutions while training the next generation of tech talent.
+              A dual-purpose tech hub and academy specializing in building
+              purposeful digital solutions while training the next generation of
+              tech talent.
             </p>
             <div className="flex gap-3">
               {socialLinks.map((social) => (
@@ -122,7 +143,9 @@ export function Footer() {
               </div>
             </form>
             <div className="mt-6">
-              <h5 className="font-medium text-background text-sm mb-3">Legal</h5>
+              <h5 className="font-medium text-background text-sm mb-3">
+                Legal
+              </h5>
               <ul className="space-y-2">
                 {legal.map((link) => (
                   <li key={link.label}>
@@ -142,12 +165,15 @@ export function Footer() {
         <Separator className="my-8 bg-background/20" />
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-background/60">
-          <p>&copy; {new Date().getFullYear()} Viek Technologies. All rights reserved.</p>
+          <p>
+            &copy; {new Date().getFullYear()} Viek Technologies. All rights
+            reserved.
+          </p>
           <p className="flex items-center gap-1">
-            Built with <span className="text-primary">purpose</span> in Ghana
+            Built with <span className="text-primary">purpose</span> in Nigeria
           </p>
         </div>
       </div>
     </footer>
-  )
+  );
 }

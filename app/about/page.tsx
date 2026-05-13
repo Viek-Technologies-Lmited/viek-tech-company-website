@@ -239,7 +239,7 @@ export default function AboutPage() {
             >
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/images/about-office.jpg"
+                  src="/images/about-office.jpeg"
                   alt="Viek Tech Office"
                   width={600}
                   height={500}
@@ -434,7 +434,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team Section */}
-      <section className="py-20 bg-white">
+      {/* <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -483,7 +483,7 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-700">
