@@ -39,7 +39,7 @@ const courses = [
     price: "₦350,000",
     rating: 4.9,
     students: 450,
-    image: "/images/course-fullstack.jpg",
+    image: "/images/web-development.jpeg",
     description: "Master both frontend and backend development with modern technologies.",
     highlights: [
       "HTML, CSS, JavaScript fundamentals",
@@ -65,7 +65,7 @@ const courses = [
     price: "₦300,000",
     rating: 4.8,
     students: 280,
-    image: "/images/course-mobile.jpg",
+    image: "/images/app-development.jpeg",
     description: "Build native and cross-platform mobile apps for iOS and Android.",
     highlights: [
       "React Native fundamentals",
@@ -91,7 +91,7 @@ const courses = [
     price: "₦280,000",
     rating: 4.7,
     students: 195,
-    image: "/images/course-data.jpg",
+    image: "/images/data-analysis.jpeg",
     description: "Learn to analyze data and build predictive models using Python.",
     highlights: [
       "Python programming",
@@ -117,7 +117,7 @@ const courses = [
     price: "₦250,000",
     rating: 4.8,
     students: 165,
-    image: "/images/course-security.jpg",
+    image: "/images/cybersecurity.jpeg",
     description: "Protect systems and networks from cyber threats.",
     highlights: [
       "Network security basics",
@@ -143,7 +143,7 @@ const courses = [
     price: "₦220,000",
     rating: 4.9,
     students: 320,
-    image: "/images/course-design.jpg",
+    image: "/images/ui-ux.jpeg",
     description: "Create beautiful, user-centered digital experiences.",
     highlights: [
       "Design thinking process",
@@ -169,7 +169,7 @@ const courses = [
     price: "₦180,000",
     rating: 4.6,
     students: 210,
-    image: "/images/course-marketing.jpg",
+    image: "/images/digital-marketing.jpeg",
     description: "Master online marketing strategies and tools.",
     highlights: [
       "SEO & content marketing",

@@ -39,48 +39,48 @@ const staggerContainer = {
 }
 
 const teamMembers = [
-  {
-    name: "Victor Ikechukwu",
-    role: "Founder & CEO",
-    image: "/images/team-1.jpg",
-    bio: "A visionary tech entrepreneur with over 10 years of experience in software development and tech education.",
-    linkedin: "#",
-    twitter: "#"
-  },
-  {
-    name: "Amara Okonkwo",
-    role: "Chief Technology Officer",
-    image: "/images/team-2.jpg",
-    bio: "Former Google engineer with expertise in cloud architecture and scalable systems.",
-    linkedin: "#",
-    twitter: "#"
-  },
-  {
-    name: "David Adeyemi",
-    role: "Head of Academy",
-    image: "/images/team-3.jpg",
-    bio: "Passionate educator with 8+ years experience training developers across Africa.",
-    linkedin: "#",
-    twitter: "#"
-  },
-  {
-    name: "Grace Nnamdi",
-    role: "Lead UX Designer",
-    image: "/images/team-4.jpg",
-    bio: "Award-winning designer focused on creating intuitive digital experiences.",
-    linkedin: "#",
-    twitter: "#"
-  }
+  // {
+  //   name: "VIEK TEAM",
+  //   role: "Founder & CEO",
+  //   image: "/images/team-1.jpg",
+  //   bio: "A visionary tech entrepreneur with over 10 years of experience in software development and tech education.",
+  //   linkedin: "#",
+  //   twitter: "#"
+  // },
+  // {
+  //   name: "Amara Okonkwo",
+  //   role: "Chief Technology Officer",
+  //   image: "/images/team-2.jpg",
+  //   bio: "Former Google engineer with expertise in cloud architecture and scalable systems.",
+  //   linkedin: "#",
+  //   twitter: "#"
+  // },
+  // {
+  //   name: "David Adeyemi",
+  //   role: "Head of Academy",
+  //   image: "/images/team-3.jpg",
+  //   bio: "Passionate educator with 8+ years experience training developers across Africa.",
+  //   linkedin: "#",
+  //   twitter: "#"
+  // },
+  // {
+  //   name: "Grace Nnamdi",
+  //   role: "Lead UX Designer",
+  //   image: "/images/team-4.jpg",
+  //   bio: "Award-winning designer focused on creating intuitive digital experiences.",
+  //   linkedin: "#",
+  //   twitter: "#"
+  // }
 ]
 
 const milestones = [
-  { year: "2018", title: "Founded", description: "Viek Tech was born from a vision to bridge the tech skills gap in Africa" },
-  { year: "2019", title: "First 100 Students", description: "Launched our academy and trained our first cohort of developers" },
-  { year: "2020", title: "Remote Expansion", description: "Pivoted to online learning, reaching students across 15 countries" },
-  { year: "2021", title: "Enterprise Solutions", description: "Expanded into enterprise software development services" },
-  { year: "2022", title: "500+ Graduates", description: "Milestone of training over 500 job-ready developers" },
-  { year: "2023", title: "Tech Hub Launch", description: "Opened our physical tech hub and innovation center" },
-  { year: "2024", title: "Global Recognition", description: "Recognized as one of Africa's top tech training institutions" }
+  { year: "2026", title: "Founded", description: "Viek Tech was born from a vision to bridge the tech skills gap in Africa" },
+  { year: "2026", title: "First Students", description: "Launched our academy and trained our first cohort of developers" },
+  { year: "2026", title: "Remote Expansion", description: "Pivoted to online learning, reaching students across 15 countries" },
+  { year: "2026", title: "Enterprise Solutions", description: "Expanded into enterprise software development services" },
+  { year: "2026", title: "Successful Graduates", description: "Milestone of training over 500 job-ready developers" },
+  { year: "2026", title: "Tech Hub Launch", description: "Opened our physical tech hub and innovation center" },
+  { year: "2026", title: "Global Recognition", description: "Recognized as one of Africa's top tech training institutions" }
 ]
 
 const values = [
@@ -115,8 +115,8 @@ const values = [
 ]
 
 const stats = [
-  { number: "500+", label: "Students Trained", icon: GraduationCap },
-  { number: "150+", label: "Projects Delivered", icon: Briefcase },
+  { number: "5+", label: "Students Trained", icon: GraduationCap },
+  { number: "20+", label: "Projects Delivered", icon: Briefcase },
   { number: "50+", label: "Enterprise Clients", icon: Building },
   { number: "98%", label: "Job Placement Rate", icon: Star }
 ]
@@ -210,7 +210,7 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 <p>
-                  Viek Tech was founded in 2018 with a simple yet powerful mission: to bridge the 
+                  Viek Tech was founded in 2026 with a simple yet powerful mission: to bridge the 
                   technology skills gap in Africa while delivering world-class digital solutions to 
                   businesses globally.
                 </p>
@@ -220,7 +220,7 @@ export default function AboutPage() {
                   who are now working at leading tech companies worldwide.
                 </p>
                 <p>
-                  Our founder, Victor Ikechukwu, recognized that Africa had immense untapped potential 
+                  Our founder, V-I-E-K, recognized that Africa had immense untapped potential 
                   in the tech sector. By combining practical training with real-world project experience, 
                   we have created a unique ecosystem where learning meets industry application.
                 </p>
@@ -252,7 +252,7 @@ export default function AboutPage() {
                     <Rocket className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <div className="font-bold text-gray-900">Since 2018</div>
+                    <div className="font-bold text-gray-900">Since 2026</div>
                     <div className="text-sm text-gray-600">Building the future</div>
                   </div>
                 </div>
