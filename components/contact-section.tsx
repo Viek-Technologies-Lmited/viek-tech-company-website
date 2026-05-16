@@ -277,7 +277,7 @@ export function ContactSection({ content }: ContactSectionProps) {
                       {content.contact.phone}
                     </p>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Mon-Fri, 9am-6pm GMT
+                      Mon-Fri, 9am-5pm GMT
                     </p>
                   </div>
                 </CardContent>
@@ -312,7 +312,7 @@ export function ContactSection({ content }: ContactSectionProps) {
                       Business Hours
                     </h3>
                     <p className="text-muted-foreground">
-                      Monday - Friday: 9:00 AM - 6:00 PM
+                      Monday - Friday: 9:00 AM - 5:00 PM
                     </p>
                     <p className="text-sm text-muted-foreground mt-1">
                       Saturday: 10:00 AM - 2:00 PM

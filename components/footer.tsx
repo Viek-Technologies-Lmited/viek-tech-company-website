@@ -15,6 +15,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 
+// Custom TikTok SVG Icon Component to match Lucide styling
+const TiktokIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={props.className}
+    {...props}
+  >
+    <path d="M9 12a4 4 0 1 0 4 4V4a8 8 0 0 0 8 8h-2a6 6 0 0 1-6-6v12a6 6 0 1 1-6-6z" />
+  </svg>
+);
+
 const quickLinks = [
   { href: "#services", label: "Services" },
   { href: "#about", label: "About Us" },
@@ -38,11 +55,23 @@ const legal = [
 ];
 
 const socialLinks = [
-  { href: "#", icon: Facebook, label: "Facebook" },
-  { href: "#", icon: Twitter, label: "Twitter" },
+  {
+    href: "https://www.facebook.com/share/18gDp7DDqF/?mibextid=wwXIfr",
+    icon: Facebook,
+    label: "Facebook",
+  },
+  {
+    href: "https://x.com/viektechno83gs?s=21",
+    icon: Twitter,
+    label: "Twitter",
+  },
   { href: "#", icon: Linkedin, label: "LinkedIn" },
   { href: "#", icon: Instagram, label: "Instagram" },
-  { href: "#", icon: Youtube, label: "YouTube" },
+  {
+    href: "https://www.tiktok.com/@viek_technologies?_r=1&_t=ZS-96MIcQVDoto",
+    icon: TiktokIcon,
+    label: "Tiktok",
+  },
 ];
 
 export function Footer() {

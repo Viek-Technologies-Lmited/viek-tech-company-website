@@ -216,8 +216,8 @@ export const defaultContent: SiteContent = {
     },
   ],
   contact: {
-    email: "info@viektech.com",
-    phone: "+233 XX XXX XXXX",
+    email: "contacts@viektech.com",
+    phone: "+234 708 281 9044",
     address: "Lagos, Nigeria",
   },
   messages: [],

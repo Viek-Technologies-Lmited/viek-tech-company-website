@@ -135,12 +135,12 @@ export default function ContactPage() {
 
               <div className="space-y-8">
                 {[
-                  { icon: Mail, label: "Email Us", val: "hello@viektech.com" },
-                  { icon: Phone, label: "Call Us", val: "+234 800 000 0000" },
+                  { icon: Mail, label: "Email Us", val: "info@viektech.com" },
+                  { icon: Phone, label: "Call Us", val: "+234 708 281 9044" },
                   {
                     icon: MapPin,
                     label: "Visit Us",
-                    val: "Lekki Phase 1, Lagos, Nigeria",
+                    val: "Lagos, Nigeria",
                   },
                 ].map((item, i) => (
                   <div key={i} className="flex gap-6">
