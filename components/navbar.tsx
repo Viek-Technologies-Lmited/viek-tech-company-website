@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   Menu,
-  ChevronDown,
   GraduationCap,
   Code,
   Smartphone,
@@ -156,23 +155,16 @@ export function Navbar() {
       )}
     >
       <nav className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-xl overflow-hidden shadow-lg shadow-primary/25">
+        <Link href="/" className="flex items-center">
+          {/* Increased width and height to make the logo significantly larger and more visible */}
+          <div className="relative w-24 h-12">
             <Image
-              src="/images/logo2.jpeg"
-              alt="Logo"
+              src="/images/logo4.png"
+              alt="Viek Technologies Logo"
               fill
-              className="object-cover"
+              className="object-contain"
               priority
             />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-bold text-lg md:text-xl text-foreground leading-tight">
-              Viek<span className="text-primary">Tech</span>
-            </span>
-            <span className="text-[10px] md:text-xs text-muted-foreground">
-              Innovating with Purpose
-            </span>
           </div>
         </Link>
 
@@ -333,6 +325,14 @@ export function Navbar() {
 
               <NavigationMenuItem>
                 <NavigationMenuLink asChild className={navLinkStyles}>
+                  <Link href="/careers" className="text-primary font-medium">
+                    Careers
+                  </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild className={navLinkStyles}>
                   <Link href="/contact">Contact</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
@@ -361,15 +361,14 @@ export function Navbar() {
             side="right"
             className="w-full sm:w-[400px] p-0 flex flex-col"
           >
-            {/* ACCESSIBILITY HEADER */}
             <SheetHeader className="p-6 border-b border-border text-left">
               <div className="flex items-center gap-3">
                 <div className="relative w-8 h-8 rounded-lg overflow-hidden">
                   <Image
-                    src="/images/logo2.jpeg"
-                    alt="Logo"
+                    src="/images/logo4.png"
+                    alt="Viek Technologies Logo"
                     fill
-                    className="object-cover"
+                    className="object-contain" // Changed from object-cover to object-contain
                   />
                 </div>
                 <SheetTitle className="font-bold text-lg">
@@ -382,7 +381,6 @@ export function Navbar() {
               </SheetDescription>
             </SheetHeader>
 
-            {/* SCROLLABLE CONTENT */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
               <div className="flex flex-col gap-1">
                 <MobileNavLink
@@ -403,8 +401,13 @@ export function Navbar() {
                   label="Blog"
                   onClick={() => setIsOpen(false)}
                 />
+                <MobileNavLink
+                  href="/careers"
+                  icon={Briefcase}
+                  label="Careers / Join Us"
+                  onClick={() => setIsOpen(false)}
+                />
 
-                {/* SERVICES SECTION */}
                 <div className="mt-4 mb-2 px-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                   Our Services
                 </div>
@@ -420,7 +423,6 @@ export function Navbar() {
                   ))}
                 </div>
 
-                {/* ACADEMY SECTION */}
                 <div className="mt-4 mb-2 px-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                   Academy Courses
                 </div>
@@ -436,7 +438,6 @@ export function Navbar() {
                   ))}
                 </div>
 
-                {/* NEW: TESTIMONIALS SECTION (From image_873e95.png) */}
                 <div className="mt-4 mb-2 px-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                   Testimonials & Reviews
                 </div>
@@ -446,7 +447,7 @@ export function Navbar() {
                       key={t.title}
                       href={t.href}
                       label={t.title}
-                      icon={t.icon} // These use the icons from image_873e95.png
+                      icon={t.icon}
                       onClick={() => setIsOpen(false)}
                       isSubLink
                     />
@@ -455,23 +456,23 @@ export function Navbar() {
               </div>
             </div>
 
-            {/* FOOTER ACTIONS */}
             <div className="p-6 border-t border-border bg-muted/20 space-y-3">
               <Link
                 href="/admin/login"
-                className="w-full"
+                className="w-full block"
                 onClick={() => setIsOpen(false)}
               >
                 <Button
                   variant="outline"
-                  className="w-full justify-start gap-2 h-11"
+                  className="w-full justify-center gap-2 h-11 border-border bg-background text-sm font-medium"
                 >
-                  {/* <Shield className="h-4 w-4" /> Admin Login */}
+                  <Shield className="h-4 w-4 text-muted-foreground" />
+                  <span>Admin Workspace Portal</span>
                 </Button>
               </Link>
               <Link
                 href="/contact"
-                className="w-full"
+                className="w-full block"
                 onClick={() => setIsOpen(false)}
               >
                 <Button className="w-full h-11 shadow-lg shadow-primary/20 text-md font-semibold">
@@ -486,14 +487,21 @@ export function Navbar() {
   );
 }
 
-// Helper component for cleaner Mobile Nav Links
+interface MobileNavLinkProps {
+  href: string;
+  label: string;
+  onClick: () => void;
+  icon?: React.ComponentType<{ className?: string }>;
+  isSubLink?: boolean;
+}
+
 function MobileNavLink({
   href,
   label,
   onClick,
   icon: Icon,
   isSubLink = false,
-}: any) {
+}: MobileNavLinkProps) {
   return (
     <Link
       href={href}
@@ -505,8 +513,10 @@ function MobileNavLink({
           : "text-foreground font-medium hover:bg-primary/5 hover:text-primary",
       )}
     >
-      {Icon && <Icon className="h-4 w-4" />}
-      {label}
+      {Icon && typeof Icon === "function" && (
+        <Icon className="h-4 w-4 shrink-0" />
+      )}
+      <span>{label}</span>
     </Link>
   );
 }

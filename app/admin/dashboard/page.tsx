@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import {
   LayoutDashboard,
   FileText,
@@ -34,11 +35,18 @@ import {
   Trash2,
   ChevronDown,
   Clock,
+  Briefcase,
+  UserCheck,
+  Plus,
+  FileDown,
+  Globe,
+  MapPin,
 } from "lucide-react";
 import {
   defaultContent,
   type SiteContent,
-  type ContactMessage,
+  type JobListing,
+  type JobApplication,
 } from "@/lib/site-content";
 import { toast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
@@ -50,6 +58,20 @@ export default function AdminDashboard() {
   const [content, setContent] = useState<SiteContent>(defaultContent);
   const [isSaving, setIsSaving] = useState(false);
   const [expandedMessage, setExpandedMessage] = useState<string | null>(null);
+  const [expandedApplication, setExpandedApplication] = useState<string | null>(
+    null,
+  );
+
+  // Fixed generic string type assignment constraint by enforcing explicit type structure mapping
+  const [newJob, setNewJob] = useState({
+    title: "",
+    department: "",
+    location: "",
+    type: "Full-time" as JobListing["type"],
+    description: "",
+    requirements: "",
+    responsibilities: "",
+  });
 
   useEffect(() => {
     const auth = sessionStorage.getItem("admin-authenticated");
@@ -59,10 +81,14 @@ export default function AdminDashboard() {
     } else {
       setIsAuthenticated(true);
       setAdminUser(user || "Admin");
-      // Load saved content from localStorage
       const savedContent = localStorage.getItem("viek-site-content");
       if (savedContent) {
-        setContent(JSON.parse(savedContent));
+        try {
+          setContent(JSON.parse(savedContent));
+        } catch (e) {
+          console.error("Error reading storage contents", e);
+          setContent(defaultContent);
+        }
       }
     }
   }, [router]);
@@ -80,23 +106,18 @@ export default function AdminDashboard() {
     setIsSaving(false);
     toast({
       title: "Changes Saved",
-      description: "Your changes have been saved successfully.",
+      description:
+        "Your platform contents and positions state have been written to disk.",
     });
   };
 
   const handleDeleteMessage = (id: string) => {
-    const updatedMessages = content.messages.filter((msg) => msg.id !== id);
-    setContent((prev) => ({
-      ...prev,
-      messages: updatedMessages,
-    }));
-    localStorage.setItem(
-      "viek-site-content",
-      JSON.stringify({
-        ...content,
-        messages: updatedMessages,
-      }),
+    const updatedMessages = (content.messages || []).filter(
+      (msg) => msg.id !== id,
     );
+    const updatedContent = { ...content, messages: updatedMessages };
+    setContent(updatedContent);
+    localStorage.setItem("viek-site-content", JSON.stringify(updatedContent));
     toast({
       title: "Message Deleted",
       description: "The message has been deleted successfully.",
@@ -104,20 +125,107 @@ export default function AdminDashboard() {
   };
 
   const handleMarkAsRead = (id: string) => {
-    const updatedMessages = content.messages.map((msg) =>
+    const updatedMessages = (content.messages || []).map((msg) =>
       msg.id === id ? { ...msg, read: true } : msg,
     );
+    const updatedContent = { ...content, messages: updatedMessages };
+    setContent(updatedContent);
+    localStorage.setItem("viek-site-content", JSON.stringify(updatedContent));
+  };
+
+  // Job Posting Controls
+  const handleToggleJobStatus = (id: string) => {
+    const updatedJobs = (content.jobs || []).map((job) =>
+      job.id === id ? { ...job, isOpen: !job.isOpen } : job,
+    );
+    setContent((prev) => ({ ...prev, jobs: updatedJobs }));
+  };
+
+  const handleDeleteJob = (id: string) => {
+    const updatedJobs = (content.jobs || []).filter((job) => job.id !== id);
+    setContent((prev) => ({ ...prev, jobs: updatedJobs }));
+    toast({
+      title: "Job Listing Removed",
+      description: "The role has been permanently scrubbed.",
+    });
+  };
+
+  const handleCreateJob = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newJob.title || !newJob.department) {
+      toast({
+        title: "Validation Error",
+        description: "Title and Department are required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const createdListing: JobListing = {
+      id: `job-${Date.now()}`,
+      title: newJob.title,
+      department: newJob.department,
+      location: newJob.location || "Remote",
+      type: newJob.type, // Resolved via explicit State Typings config layout on init
+      description: newJob.description,
+      requirements: newJob.requirements
+        .split("\n")
+        .filter((r) => r.trim() !== ""),
+      responsibilities: newJob.responsibilities
+        .split("\n")
+        .filter((r) => r.trim() !== ""),
+      isOpen: true,
+    };
+
     setContent((prev) => ({
       ...prev,
-      messages: updatedMessages,
+      jobs: [...(prev.jobs || []), createdListing],
     }));
-    localStorage.setItem(
-      "viek-site-content",
-      JSON.stringify({
-        ...content,
-        messages: updatedMessages,
-      }),
+
+    setNewJob({
+      title: "",
+      department: "",
+      location: "",
+      type: "Full-time",
+      description: "",
+      requirements: "",
+      responsibilities: "",
+    });
+
+    toast({
+      title: "Job Created!",
+      description: "Position is now live on the public recruitment directory.",
+    });
+  };
+
+  // Application Pipeline Handlers
+  const handleUpdateApplicationStatus = (
+    id: string,
+    status: "Pending" | "Reviewed" | "Rejected",
+  ) => {
+    const updatedApps = (content.applications || []).map((app) =>
+      app.id === id ? { ...app, status } : app,
     );
+    boxLayoutSync(updatedApps);
+  };
+
+  const boxLayoutSync = (updatedApps: JobApplication[]) => {
+    setContent((prev) => ({ ...prev, applications: updatedApps }));
+    toast({
+      title: "Status Synchronized",
+      description: `Applicant classification status safely tracked.`,
+    });
+  };
+
+  const handleDeleteApplication = (id: string) => {
+    const updatedApps = (content.applications || []).filter(
+      (app) => app.id !== id,
+    );
+    setContent((prev) => ({ ...prev, applications: updatedApps }));
+    toast({
+      title: "Profile Dismissed",
+      description: "Application submission records have been cleared.",
+    });
   };
 
   const formatDate = (timestamp: number) => {
@@ -138,29 +246,29 @@ export default function AdminDashboard() {
     });
   };
 
-  const unreadCount = content?.messages?.filter((msg) => !msg.read).length;
+  // Live Count Getters
+  const unreadMessagesCount =
+    content?.messages?.filter((msg) => !msg.read).length || 0;
+  const pendingApplicationsCount =
+    content?.applications?.filter((app) => app.status === "Pending").length ||
+    0;
+  const totalJobsCount = content?.jobs?.length || 0;
 
   const updateHero = (field: keyof typeof content.hero, value: string) => {
-    setContent((prev) => ({
-      ...prev,
-      hero: { ...prev.hero, [field]: value },
-    }));
+    setContent((prev) => ({ ...prev, hero: { ...prev.hero, [field]: value } }));
   };
-
   const updateStats = (field: keyof typeof content.stats, value: string) => {
     setContent((prev) => ({
       ...prev,
       stats: { ...prev.stats, [field]: value },
     }));
   };
-
   const updateAbout = (field: keyof typeof content.about, value: string) => {
     setContent((prev) => ({
       ...prev,
       about: { ...prev.about, [field]: value },
     }));
   };
-
   const updateContact = (
     field: keyof typeof content.contact,
     value: string,
@@ -182,6 +290,7 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-muted/30">
       <Toaster />
+
       {/* Header */}
       <header className="bg-background border-b border-border sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -193,7 +302,7 @@ export default function AdminDashboard() {
               <span className="font-bold text-foreground">ViekTech</span>
             </Link>
             <Badge variant="secondary" className="hidden sm:inline-flex">
-              Admin Dashboard
+              Admin Portal
             </Badge>
           </div>
           <div className="flex items-center gap-3">
@@ -201,6 +310,16 @@ export default function AdminDashboard() {
               <User className="w-4 h-4" />
               {adminUser}
             </div>
+            <Link href="/careers" target="_blank">
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-2 border-primary/20 hover:bg-primary/5"
+              >
+                <Globe className="w-4 h-4 text-primary" />
+                <span>Careers Page</span>
+              </Button>
+            </Link>
             <Link href="/" target="_blank">
               <Button variant="outline" size="sm" className="gap-2">
                 <Eye className="w-4 h-4" />
@@ -222,11 +341,11 @@ export default function AdminDashboard() {
 
       <main className="container mx-auto px-4 py-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.4 }}
         >
-          {/* Dashboard Stats */}
+          {/* Top Metric Aggregations Row */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <Card>
               <CardContent className="p-4">
@@ -238,7 +357,9 @@ export default function AdminDashboard() {
                     <p className="text-2xl font-bold">
                       {content.stats.projects}
                     </p>
-                    <p className="text-xs text-muted-foreground">Projects</p>
+                    <p className="text-xs text-muted-foreground">
+                      Core Projects
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -247,13 +368,13 @@ export default function AdminDashboard() {
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-                    <Users className="w-5 h-5 text-green-600" />
+                    <Briefcase className="w-5 h-5 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold">
-                      {content.stats.students}
+                    <p className="text-2xl font-bold">{totalJobsCount}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Configured Roles
                     </p>
-                    <p className="text-xs text-muted-foreground">Students</p>
                   </div>
                 </div>
               </CardContent>
@@ -262,13 +383,15 @@ export default function AdminDashboard() {
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
-                    <MessageSquare className="w-5 h-5 text-orange-600" />
+                    <UserCheck className="w-5 h-5 text-orange-600" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold">
-                      {content.stats.clients}
+                      {(content.applications || []).length}
                     </p>
-                    <p className="text-xs text-muted-foreground">Clients</p>
+                    <p className="text-xs text-muted-foreground">
+                      Applications
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -280,11 +403,9 @@ export default function AdminDashboard() {
                     <Mail className="w-5 h-5 text-blue-600" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold">
-                      {content.stats.successRate}
-                    </p>
+                    <p className="text-2xl font-bold">{unreadMessagesCount}</p>
                     <p className="text-xs text-muted-foreground">
-                      Success Rate
+                      Unread Messages
                     </p>
                   </div>
                 </div>
@@ -292,62 +413,93 @@ export default function AdminDashboard() {
             </Card>
           </div>
 
-          {/* Content Editor */}
+          {/* Centralized Core Workspace Panel */}
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
+            <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border pb-6 mb-6">
               <div>
-                <CardTitle className="flex items-center gap-2">
-                  <Edit3 className="w-5 h-5" />
-                  Content & Messages
+                <CardTitle className="flex items-center gap-2 text-xl font-bold">
+                  <Edit3 className="w-5 h-5 text-primary" />
+                  Global Workspace Manager
                 </CardTitle>
                 <CardDescription>
-                  Manage your website content and client messages
+                  Modify landing content assets, manage job board positions, and
+                  review user interactions.
                 </CardDescription>
               </div>
               <Button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="gap-2"
+                className="gap-2 w-full sm:w-auto shadow-sm font-semibold"
               >
                 <Save className="w-4 h-4" />
-                {isSaving ? "Saving..." : "Save Changes"}
+                {isSaving ? "Saving..." : "Commit Global Save"}
               </Button>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="hero">
-                <TabsList className="mb-6 flex-wrap h-auto gap-1">
-                  <TabsTrigger value="hero" className="gap-1">
+                <TabsList className="mb-6 flex-wrap h-auto p-1 bg-muted gap-1">
+                  <TabsTrigger value="hero" className="gap-1.5">
                     <Home className="w-4 h-4" />
                     Hero
                   </TabsTrigger>
-                  <TabsTrigger value="stats" className="gap-1">
+                  <TabsTrigger value="stats" className="gap-1.5">
                     <LayoutDashboard className="w-4 h-4" />
-                    Stats
+                    Metrics
                   </TabsTrigger>
-                  <TabsTrigger value="about" className="gap-1">
+                  <TabsTrigger value="about" className="gap-1.5">
                     <FileText className="w-4 h-4" />
                     About
                   </TabsTrigger>
-                  <TabsTrigger value="contact" className="gap-1">
+                  <TabsTrigger value="contact" className="gap-1.5">
                     <Settings className="w-4 h-4" />
                     Contact
                   </TabsTrigger>
-                  <TabsTrigger value="messages" className="gap-1 relative">
-                    <Mail className="w-4 h-4" />
-                    Messages
-                    {unreadCount > 0 && (
+
+                  <TabsTrigger value="jobs" className="gap-1.5 relative">
+                    <Briefcase className="w-4 h-4" />
+                    Manage Jobs
+                    {totalJobsCount > 0 && (
+                      <Badge
+                        variant="secondary"
+                        className="ml-1.5 bg-background text-foreground text-[10px] px-1.5 py-0"
+                      >
+                        {totalJobsCount}
+                      </Badge>
+                    )}
+                  </TabsTrigger>
+
+                  <TabsTrigger
+                    value="applications"
+                    className="gap-1.5 relative"
+                  >
+                    <UserCheck className="w-4 h-4" />
+                    Talent Applications
+                    {pendingApplicationsCount > 0 && (
                       <Badge
                         variant="destructive"
-                        className="ml-2 h-5 w-5 p-0 flex items-center justify-center text-xs"
+                        className="ml-1.5 text-[10px] px-1.5 py-0 animate-pulse"
                       >
-                        {unreadCount}
+                        {pendingApplicationsCount}
+                      </Badge>
+                    )}
+                  </TabsTrigger>
+
+                  <TabsTrigger value="messages" className="gap-1.5 relative">
+                    <Mail className="w-4 h-4" />
+                    Messages
+                    {unreadMessagesCount > 0 && (
+                      <Badge
+                        variant="destructive"
+                        className="ml-1.5 text-[10px] px-1.5 py-0"
+                      >
+                        {unreadMessagesCount}
                       </Badge>
                     )}
                   </TabsTrigger>
                 </TabsList>
 
-                {/* Hero Tab */}
-                <TabsContent value="hero" className="space-y-4">
+                {/* Hero Tab Component */}
+                <TabsContent value="hero" className="space-y-4 outline-none">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Badge Text</Label>
@@ -405,8 +557,8 @@ export default function AdminDashboard() {
                   </div>
                 </TabsContent>
 
-                {/* Stats Tab */}
-                <TabsContent value="stats" className="space-y-4">
+                {/* Stats Tab Component */}
+                <TabsContent value="stats" className="space-y-4 outline-none">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Projects Count</Label>
@@ -445,8 +597,8 @@ export default function AdminDashboard() {
                   </div>
                 </TabsContent>
 
-                {/* About Tab */}
-                <TabsContent value="about" className="space-y-4">
+                {/* About Tab Component */}
+                <TabsContent value="about" className="space-y-4 outline-none">
                   <div className="space-y-2">
                     <Label>Mission Statement</Label>
                     <Textarea
@@ -473,8 +625,8 @@ export default function AdminDashboard() {
                   </div>
                 </TabsContent>
 
-                {/* Contact Tab */}
-                <TabsContent value="contact" className="space-y-4">
+                {/* Contact Tab Component */}
+                <TabsContent value="contact" className="space-y-4 outline-none">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Email Address</Label>
@@ -500,35 +652,479 @@ export default function AdminDashboard() {
                   </div>
                 </TabsContent>
 
-                {/* Messages Tab */}
-                <TabsContent value="messages" className="space-y-4">
+                {/* Jobs Management Tab Component */}
+                <TabsContent value="jobs" className="space-y-6 outline-none">
+                  <div className="grid lg:grid-cols-5 gap-6">
+                    {/* Add Position Form Panel */}
+                    <div className="lg:col-span-2 border border-border rounded-xl p-4 bg-muted/20 space-y-4 h-fit">
+                      <h3 className="font-bold text-sm flex items-center gap-1.5 tracking-tight text-foreground uppercase">
+                        <Plus className="w-4 h-4 text-primary" /> Add New
+                        Position
+                      </h3>
+                      <form onSubmit={handleCreateJob} className="space-y-3">
+                        <div className="space-y-1">
+                          <Label htmlFor="jobTitle" className="text-xs">
+                            Job Title
+                          </Label>
+                          <Input
+                            id="jobTitle"
+                            placeholder="Senior Frontend Engineer"
+                            value={newJob.title}
+                            onChange={(e) =>
+                              setNewJob((p) => ({
+                                ...p,
+                                title: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="space-y-1">
+                            <Label htmlFor="jobDept" className="text-xs">
+                              Department
+                            </Label>
+                            <Input
+                              id="jobDept"
+                              placeholder="Engineering"
+                              value={newJob.department}
+                              onChange={(e) =>
+                                setNewJob((p) => ({
+                                  ...p,
+                                  department: e.target.value,
+                                }))
+                              }
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <Label htmlFor="jobLoc" className="text-xs">
+                              Location
+                            </Label>
+                            <Input
+                              id="jobLoc"
+                              placeholder="Remote / Lagos"
+                              value={newJob.location}
+                              onChange={(e) =>
+                                setNewJob((p) => ({
+                                  ...p,
+                                  location: e.target.value,
+                                }))
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs">Job Type</Label>
+                          <select
+                            className="w-full text-sm rounded-md border border-input bg-background px-3 py-2 text-foreground shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                            value={newJob.type}
+                            onChange={(e) =>
+                              setNewJob((p) => ({
+                                ...p,
+                                type: e.target.value as JobListing["type"],
+                              }))
+                            }
+                          >
+                            <option value="Full-time">Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Contract">Contract</option>
+                            <option value="Internship">Internship</option>
+                            <option value="Remote">Remote</option>
+                          </select>
+                        </div>
+                        <div className="space-y-1">
+                          <Label htmlFor="jobDesc" className="text-xs">
+                            Description
+                          </Label>
+                          <Textarea
+                            id="jobDesc"
+                            rows={2}
+                            placeholder="Provide an explicit operational overview..."
+                            value={newJob.description}
+                            onChange={(e) =>
+                              setNewJob((p) => ({
+                                ...p,
+                                description: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <Label htmlFor="jobReqs" className="text-xs">
+                            Requirements (One item per line)
+                          </Label>
+                          <Textarea
+                            id="jobReqs"
+                            rows={2}
+                            placeholder="5+ Years React Frameworks&#10;TypeScript Proficiency"
+                            value={newJob.requirements}
+                            onChange={(e) =>
+                              setNewJob((p) => ({
+                                ...p,
+                                requirements: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <Label htmlFor="jobResps" className="text-xs">
+                            Responsibilities (One item per line)
+                          </Label>
+                          <Textarea
+                            id="jobResps"
+                            rows={2}
+                            placeholder="Maintain layout components&#10;Optimize edge runtime performance"
+                            value={newJob.responsibilities}
+                            onChange={(e) =>
+                              setNewJob((p) => ({
+                                ...p,
+                                responsibilities: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+                        <Button
+                          type="submit"
+                          size="sm"
+                          className="w-full font-semibold gap-1"
+                        >
+                          <Plus className="w-3.5 h-3.5" /> Launch Position
+                        </Button>
+                      </form>
+                    </div>
+
+                    {/* Active Vacancies Directory List */}
+                    <div className="lg:col-span-3 space-y-3">
+                      <h3 className="font-bold text-sm tracking-tight uppercase text-muted-foreground px-1">
+                        Active Directories ({totalJobsCount})
+                      </h3>
+                      {content.jobs && content.jobs.length > 0 ? (
+                        <div className="space-y-2.5">
+                          {content.jobs.map((job) => (
+                            <div
+                              key={job.id}
+                              className="border border-border bg-card rounded-xl p-4 flex items-center justify-between gap-4 shadow-sm"
+                            >
+                              <div className="space-y-1 min-w-0">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <h4 className="font-bold text-base tracking-tight text-foreground truncate">
+                                    {job.title}
+                                  </h4>
+                                  <Badge
+                                    variant={
+                                      job.isOpen ? "default" : "secondary"
+                                    }
+                                    className="text-[10px] py-0 px-1.5"
+                                  >
+                                    {job.isOpen ? "Active Listing" : "Closed"}
+                                  </Badge>
+                                </div>
+                                <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
+                                  <span>{job.department}</span>
+                                  <span>•</span>
+                                  <span className="flex items-center gap-0.5">
+                                    <MapPin className="w-3 h-3" />{" "}
+                                    {job.location}
+                                  </span>
+                                  <span>•</span>
+                                  <span>{job.type}</span>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-3 shrink-0">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-xs text-muted-foreground hidden sm:inline">
+                                    Status Portal
+                                  </span>
+                                  <Switch
+                                    checked={job.isOpen}
+                                    onCheckedChange={() =>
+                                      handleToggleJobStatus(job.id)
+                                    }
+                                  />
+                                </div>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="text-destructive hover:bg-destructive/10 h-8 w-8"
+                                  onClick={() => handleDeleteJob(job.id)}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="border border-dashed p-12 text-center rounded-xl bg-muted/10">
+                          <Briefcase className="w-8 h-8 text-muted-foreground/40 mx-auto mb-2" />
+                          <p className="text-sm text-muted-foreground">
+                            No configured job opportunities found.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </TabsContent>
+
+                {/* Talent Applications Tab Component */}
+                <TabsContent
+                  value="applications"
+                  className="space-y-4 outline-none"
+                >
+                  {content.applications && content.applications.length > 0 ? (
+                    <div className="space-y-3">
+                      <h3 className="font-bold text-sm tracking-tight uppercase text-muted-foreground px-1">
+                        Candidate Intake Pipeline (
+                        {(content.applications || []).length})
+                      </h3>
+                      <div className="space-y-2">
+                        {[...(content.applications || [])]
+                          .sort((a, b) => b.timestamp - a.timestamp)
+                          .map((app) => (
+                            <div
+                              key={app.id}
+                              className={`border rounded-xl p-4 transition-all shadow-sm ${
+                                app.status === "Pending"
+                                  ? "bg-orange-50/40 border-orange-200"
+                                  : "bg-card border-border"
+                              }`}
+                            >
+                              <div
+                                className="cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                                onClick={() =>
+                                  setExpandedApplication(
+                                    expandedApplication === app.id
+                                      ? null
+                                      : app.id,
+                                  )
+                                }
+                              >
+                                <div className="space-y-1 min-w-0">
+                                  <div className="flex items-center gap-2 flex-wrap">
+                                    <h4 className="font-bold text-base tracking-tight text-foreground">
+                                      {app.fullName}
+                                    </h4>
+                                    <Badge
+                                      variant={
+                                        app.status === "Pending"
+                                          ? "outline"
+                                          : "default"
+                                      }
+                                      className={`text-[10px] py-0 px-2 font-semibold ${
+                                        app.status === "Pending"
+                                          ? "bg-amber-500 text-white hover:bg-amber-600 border-transparent"
+                                          : app.status === "Reviewed"
+                                            ? "bg-emerald-600 text-white hover:bg-emerald-700 border-transparent"
+                                            : "bg-destructive text-destructive-foreground"
+                                      }`}
+                                    >
+                                      {app.status}
+                                    </Badge>
+                                  </div>
+                                  <p className="text-xs font-semibold text-primary truncate">
+                                    Target Position: {app.jobTitle}
+                                  </p>
+                                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                                    <Clock className="w-3 h-3" /> Submitted{" "}
+                                    {formatDate(app.timestamp)}
+                                  </p>
+                                </div>
+
+                                <div className="flex items-center gap-3 shrink-0 self-end sm:self-center">
+                                  <div className="text-xs text-muted-foreground">
+                                    {app.email}
+                                  </div>
+                                  <ChevronDown
+                                    className={`w-4 h-4 text-muted-foreground transition-transform ${expandedApplication === app.id ? "rotate-180" : ""}`}
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Expanded Application Workspace Drawer */}
+                              {expandedApplication === app.id && (
+                                <div className="mt-4 pt-4 border-t border-border grid md:grid-cols-3 gap-6 animate-fadeIn">
+                                  <div className="md:col-span-2 space-y-3.5">
+                                    <div className="grid sm:grid-cols-2 gap-2 text-sm bg-muted/40 rounded-lg p-3">
+                                      <div>
+                                        <span className="text-xs text-muted-foreground block">
+                                          Email
+                                        </span>{" "}
+                                        <span className="font-medium">
+                                          {app.email}
+                                        </span>
+                                      </div>
+                                      <div>
+                                        <span className="text-xs text-muted-foreground block">
+                                          Phone
+                                        </span>{" "}
+                                        <span className="font-medium">
+                                          {app.phone}
+                                        </span>
+                                      </div>
+                                      {app.portfolioUrl && (
+                                        <div className="sm:col-span-2 mt-1">
+                                          <span className="text-xs text-muted-foreground block">
+                                            Portfolio Link / GitHub
+                                          </span>
+                                          <a
+                                            href={app.portfolioUrl}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="text-primary font-medium hover:underline break-all"
+                                          >
+                                            {app.portfolioUrl}
+                                          </a>
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    <div>
+                                      <h5 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
+                                        Pitch Summary
+                                      </h5>
+                                      <p className="text-sm bg-card p-3 rounded-lg border border-border whitespace-pre-wrap leading-relaxed text-foreground">
+                                        {app.coverLetter ||
+                                          "Applicant did not attach a customized cover pitch statement."}
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  <div className="space-y-4 flex flex-col justify-between">
+                                    {/* Action Matrix Status Hooks */}
+                                    <div className="space-y-2">
+                                      <h5 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                                        Application State Route
+                                      </h5>
+                                      <div className="grid grid-cols-3 gap-1.5">
+                                        <Button
+                                          size="sm"
+                                          variant={
+                                            app.status === "Pending"
+                                              ? "default"
+                                              : "outline"
+                                          }
+                                          className={`text-xs py-1 ${app.status === "Pending" ? "bg-amber-600 text-white hover:bg-amber-700 border-transparent" : ""}`}
+                                          onClick={() =>
+                                            handleUpdateApplicationStatus(
+                                              app.id,
+                                              "Pending",
+                                            )
+                                          }
+                                        >
+                                          Pending
+                                        </Button>
+                                        <Button
+                                          size="sm"
+                                          variant={
+                                            app.status === "Reviewed"
+                                              ? "default"
+                                              : "outline"
+                                          }
+                                          className={`text-xs py-1 ${app.status === "Reviewed" ? "bg-emerald-600 text-white hover:bg-emerald-700 border-transparent" : ""}`}
+                                          onClick={() =>
+                                            handleUpdateApplicationStatus(
+                                              app.id,
+                                              "Reviewed",
+                                            )
+                                          }
+                                        >
+                                          Review
+                                        </Button>
+                                        <Button
+                                          size="sm"
+                                          variant={
+                                            app.status === "Rejected"
+                                              ? "destructive"
+                                              : "outline"
+                                          }
+                                          className="text-xs py-1"
+                                          onClick={() =>
+                                            handleUpdateApplicationStatus(
+                                              app.id,
+                                              "Rejected",
+                                            )
+                                          }
+                                        >
+                                          Reject
+                                        </Button>
+                                      </div>
+                                    </div>
+
+                                    {/* Download Document Action Wrapper */}
+                                    {app.resumeUrl && (
+                                      <div className="space-y-1.5">
+                                        <h5 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                                          Attached Materials
+                                        </h5>
+                                        <a
+                                          href={app.resumeUrl}
+                                          download={`Resume_${app.fullName.replace(/\s+/g, "_")}.pdf`}
+                                          className="block w-full"
+                                        >
+                                          <Button
+                                            size="sm"
+                                            className="w-full gap-2 font-semibold"
+                                          >
+                                            <FileDown className="w-4 h-4" />{" "}
+                                            Download Resume Document
+                                          </Button>
+                                        </a>
+                                      </div>
+                                    )}
+
+                                    <div className="pt-2 border-t border-border/60 flex justify-end">
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="gap-1 text-destructive hover:bg-destructive/10"
+                                        onClick={() =>
+                                          handleDeleteApplication(app.id)
+                                        }
+                                      >
+                                        <Trash2 className="w-3.5 h-3.5" /> Purge
+                                        Submission Record
+                                      </Button>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-12 border border-dashed rounded-xl bg-muted/5">
+                      <Users className="w-12 h-12 text-muted-foreground/30 mx-auto mb-2" />
+                      <p className="text-sm text-muted-foreground">
+                        The candidate submission directory is empty.
+                      </p>
+                    </div>
+                  )}
+                </TabsContent>
+
+                {/* Messages Tab Component */}
+                <TabsContent
+                  value="messages"
+                  className="space-y-4 outline-none"
+                >
                   {content.messages && content.messages.length > 0 ? (
                     <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="font-semibold">
-                            {content.messages.length} Message
-                            {content.messages.length !== 1 ? "s" : ""}
-                          </h3>
-                          {unreadCount > 0 && (
-                            <p className="text-sm text-muted-foreground">
-                              {unreadCount} unread
-                            </p>
-                          )}
-                        </div>
+                      <div className="flex items-center justify-between px-1">
+                        <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-tight">
+                          Inbound Channels Directory ({content.messages.length})
+                        </h3>
                       </div>
 
                       <div className="space-y-2">
-                        {content.messages
+                        {[...(content.messages || [])]
                           .sort((a, b) => b.timestamp - a.timestamp)
                           .map((message) => (
                             <div
                               key={message.id}
-                              className={`border rounded-lg p-4 transition-colors ${
+                              className={`border rounded-xl p-4 transition-colors shadow-sm ${
                                 !message.read
-                                  ? "bg-blue-50 border-blue-200"
-                                  : "bg-white border-gray-200"
-                              } hover:bg-gray-50`}
+                                  ? "bg-blue-50/40 border-blue-200"
+                                  : "bg-card border-border"
+                              } hover:bg-muted/10`}
                             >
                               <div
                                 className="cursor-pointer"
@@ -538,74 +1134,66 @@ export default function AdminDashboard() {
                                       ? null
                                       : message.id,
                                   );
-                                  if (!message.read) {
+                                  if (!message.read)
                                     handleMarkAsRead(message.id);
-                                  }
                                 }}
                               >
                                 <div className="flex items-start justify-between gap-4">
                                   <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 mb-1">
-                                      <h4 className="font-semibold text-gray-900 truncate">
+                                      <h4 className="font-bold text-base tracking-tight text-foreground truncate">
                                         {message.name}
                                       </h4>
                                       {!message.read && (
                                         <Badge
                                           variant="default"
-                                          className="shrink-0"
+                                          className="text-[10px] py-0 px-1.5 animate-pulse"
                                         >
                                           New
                                         </Badge>
                                       )}
                                     </div>
-                                    <p className="text-sm text-gray-500 mb-2">
+                                    <p className="text-xs text-muted-foreground mb-1.5">
                                       {message.email}
                                     </p>
-                                    <p className="font-medium text-gray-900 mb-1">
+                                    <p className="font-semibold text-sm text-foreground mb-1">
                                       {message.subject}
                                     </p>
-                                    <p className="text-sm text-gray-600 line-clamp-2">
+                                    <p className="text-sm text-muted-foreground line-clamp-1">
                                       {message.message}
                                     </p>
                                   </div>
-                                  <div className="flex items-center gap-2 shrink-0">
-                                    <div className="flex items-center gap-1 text-xs text-gray-500">
-                                      <Clock className="w-3 h-3" />
-                                      {formatDate(message.timestamp)}
-                                    </div>
+                                  <div className="flex items-center gap-2 shrink-0 text-xs text-muted-foreground">
+                                    <Clock className="w-3 h-3" />
+                                    {formatDate(message.timestamp)}
                                     <ChevronDown
-                                      className={`w-5 h-5 text-gray-400 transition-transform ${
-                                        expandedMessage === message.id
-                                          ? "rotate-180"
-                                          : ""
-                                      }`}
+                                      className={`w-4 h-4 text-muted-foreground transition-transform ${expandedMessage === message.id ? "rotate-180" : ""}`}
                                     />
                                   </div>
                                 </div>
                               </div>
 
-                              {/* Expanded Message */}
                               {expandedMessage === message.id && (
-                                <div className="mt-4 pt-4 border-t border-gray-200">
-                                  <div className="mb-4">
-                                    <h5 className="text-xs font-semibold text-gray-500 uppercase mb-2">
-                                      Full Message
+                                <div className="mt-4 pt-4 border-t border-border space-y-4 animate-fadeIn">
+                                  <div>
+                                    <h5 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+                                      Message Core Body
                                     </h5>
-                                    <p className="text-gray-700 whitespace-pre-wrap">
+                                    <p className="text-sm text-foreground bg-muted/40 p-3 rounded-lg border border-border whitespace-pre-wrap leading-relaxed">
                                       {message.message}
                                     </p>
                                   </div>
-                                  <div className="flex gap-2">
+                                  <div className="flex justify-end">
                                     <Button
-                                      variant="outline"
+                                      variant="ghost"
                                       size="sm"
                                       onClick={() =>
                                         handleDeleteMessage(message.id)
                                       }
-                                      className="gap-2 text-destructive hover:text-destructive"
+                                      className="gap-1 text-destructive hover:bg-destructive/10"
                                     >
-                                      <Trash2 className="w-4 h-4" />
-                                      Delete
+                                      <Trash2 className="w-3.5 h-3.5" /> Delete
+                                      Message Thread
                                     </Button>
                                   </div>
                                 </div>
@@ -615,9 +1203,11 @@ export default function AdminDashboard() {
                       </div>
                     </div>
                   ) : (
-                    <div className="text-center py-12">
-                      <MessageSquare className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                      <p className="text-gray-500">No messages yet</p>
+                    <div className="text-center py-12 border border-dashed rounded-xl bg-muted/5">
+                      <MessageSquare className="w-12 h-12 text-muted-foreground/30 mx-auto mb-2" />
+                      <p className="text-sm text-muted-foreground">
+                        No client messages logged in the database.
+                      </p>
                     </div>
                   )}
                 </TabsContent>
