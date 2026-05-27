@@ -325,7 +325,7 @@ export function Navbar() {
 
               <NavigationMenuItem>
                 <NavigationMenuLink asChild className={navLinkStyles}>
-                  <Link href="/careers" className="text-primary font-medium">
+                  <Link href="/careers" className="text-black font-medium">
                     Careers
                   </Link>
                 </NavigationMenuLink>
