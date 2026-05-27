@@ -182,9 +182,8 @@ export const defaultContent: SiteContent = {
   ],
   about: {
     mission:
-      "To provide cutting-edge digital solutions and world-class technical education that empowers individuals and businesses to thrive. At Viek Tech, we bridge the gap between potential and performance by innovating with purpose.",
-    vision:
-      "To become a global leader in tech innovation and talent development, fostering a future where technology is accessible, impactful, and driven by a commitment to excellence.",
+      "Bridging the gap between potential and performance with purposeful tech innovation.",
+    vision: "To be a global leader in tech innovation and talent development.",
     pitch:
       "Whether we are developing software or mentoring students, our goal is the same: Innovating with purpose.",
   },
