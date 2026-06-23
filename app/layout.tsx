@@ -7,16 +7,15 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.viektech.com"),
   title: "Viek Tech - Innovating with Purpose | Tech Solutions & Academy",
   description:
     "Viek Technologies is a dual-purpose tech hub and academy. We specialize in building purposeful digital solutions for businesses while training the next generation of tech talent.",
-  generator: "v0.app",
-  // --- ADD THIS SECTION BELOW ---
   openGraph: {
     title: "Viek Tech - Innovating with Purpose",
     description:
       "Tech solutions and academy specializing in purposeful digital growth.",
-    url: "https://v0-viek-tech-company-website.vercel.app/",
+    url: "https://www.viektech.com/",
     siteName: "Viek Tech",
     images: [
       {
@@ -39,16 +38,14 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
+        url: "/favicon-48x48.png",
+        sizes: "48x48",
+        type: "image/png",
       },
       {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
+        url: "/favicon-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
       },
     ],
     apple: "/apple-icon.png",

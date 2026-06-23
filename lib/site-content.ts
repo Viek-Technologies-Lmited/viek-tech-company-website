@@ -243,7 +243,7 @@ export const defaultContent: SiteContent = {
     },
   ],
   contact: {
-    email: "contacts@viektech.com",
+    email: "support@viektech.com",
     phone: "+234 708 281 9044",
     address: "Lagos, Nigeria",
   },

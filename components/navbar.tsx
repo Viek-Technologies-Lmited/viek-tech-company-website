@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   Menu,
   GraduationCap,
@@ -155,17 +154,12 @@ export function Navbar() {
       )}
     >
       <nav className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center">
-          {/* Increased width and height to make the logo significantly larger and more visible */}
-          <div className="relative w-24 h-12">
-            <Image
-              src="/images/logo4.png"
-              alt="Viek Technologies Logo"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
+        <Link href="/" className="flex shrink-0 items-center">
+          <img
+            src="/images/logo4.png"
+            alt="Viek Technologies Logo"
+            className="h-16 w-auto max-w-[12rem] object-contain drop-shadow-sm"
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -363,17 +357,12 @@ export function Navbar() {
           >
             <SheetHeader className="p-6 border-b border-border text-left">
               <div className="flex items-center gap-3">
-                <div className="relative w-8 h-8 rounded-lg overflow-hidden">
-                  <Image
-                    src="/images/logo4.png"
-                    alt="Viek Technologies Logo"
-                    fill
-                    className="object-contain" // Changed from object-cover to object-contain
-                  />
-                </div>
-                <SheetTitle className="font-bold text-lg">
-                  Viek<span className="text-primary">Tech</span>
-                </SheetTitle>
+                <img
+                  src="/images/logo4.png"
+                  alt="Viek Technologies Logo"
+                  className="h-14 w-auto max-w-[10rem] object-contain drop-shadow-sm"
+                />
+                <SheetTitle className="sr-only">Viek Technologies</SheetTitle>
               </div>
               <SheetDescription className="text-xs text-muted-foreground">
                 Innovating with Purpose. Navigate through our services, academy,

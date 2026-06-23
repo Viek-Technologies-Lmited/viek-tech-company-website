@@ -33,6 +33,7 @@ import {
   ArrowLeft,
   Upload,
   CheckCircle2,
+  Mail,
 } from "lucide-react";
 import {
   defaultContent,
@@ -186,6 +187,16 @@ export default function CareersPage() {
                     cutting-edge software solutions and mentoring the next
                     generation of digital builders.
                   </p>
+                  <p className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                    <Mail className="w-4 h-4 text-primary" />
+                    Email us at{" "}
+                    <a
+                      href="mailto:jobs@viektech.com"
+                      className="font-medium text-primary hover:underline"
+                    >
+                      jobs@viektech.com
+                    </a>
+                  </p>
                 </div>
 
                 <div className="space-y-4">
@@ -232,7 +243,14 @@ export default function CareersPage() {
                     <Card className="p-12 text-center border-dashed">
                       <p className="text-muted-foreground">
                         No active roles listed at the moment. Check back soon or
-                        drop us an email!
+                        email us at{" "}
+                        <a
+                          href="mailto:jobs@viektech.com"
+                          className="font-medium text-primary hover:underline"
+                        >
+                          jobs@viektech.com
+                        </a>
+                        .
                       </p>
                     </Card>
                   )}
