@@ -105,6 +105,13 @@ export function Footer() {
               purposeful digital solutions while training the next generation of
               tech talent.
             </p>
+            <Link
+              href="mailto:info@viektech.com"
+              className="inline-flex items-center gap-2 text-sm text-background/70 hover:text-primary transition-colors"
+            >
+              <Mail className="w-4 h-4" />
+              info@viektech.com
+            </Link>
             <div className="flex gap-3">
               {socialLinks.map((social) => (
                 <Link
