@@ -163,7 +163,7 @@ export function HeroSection({ content }: HeroSectionProps) {
                       {content.stats.students}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Students Trained.
+                      Students Trained
                     </p>
                   </div>
                 </div>
