@@ -106,8 +106,6 @@ export default function CareersPage() {
     if (!selectedJob) return;
 
     setIsSubmitting(true);
-    // Simulate slight network delay
-    await new Promise((resolve) => setTimeout(resolve, 1200));
 
     const newApplication: JobApplication = {
       id: `app-${Date.now()}`,
@@ -123,6 +121,7 @@ export default function CareersPage() {
       status: "Pending",
     };
 
+    // Save to localStorage (keeps existing behavior)
     setContent((prev) => {
       const updatedApplications = [
         ...(prev.applications || []),
@@ -133,10 +132,41 @@ export default function CareersPage() {
       return updatedContent;
     });
 
+    // Send email notification via API route
+    try {
+      const fd = new FormData();
+      fd.append("fullName", formData.fullName);
+      fd.append("email", formData.email);
+      fd.append("phone", formData.phone);
+      fd.append("jobTitle", selectedJob.title);
+      fd.append("portfolioUrl", formData.portfolioUrl);
+      fd.append("coverLetter", formData.coverLetter);
+
+      // Reconstruct the File from the data URL if it exists
+      if (resumeFile && resumeName) {
+        const response = await fetch(resumeFile);
+        const blob = await response.blob();
+        fd.append("resume", blob, resumeName);
+      }
+
+      const emailResponse = await fetch("/api/careers/apply", {
+        method: "POST",
+        body: fd,
+      });
+
+      if (!emailResponse.ok) {
+        console.error("Email notification failed:", emailResponse.statusText);
+        // Don't fail the submission if email fails — the application is still saved
+      }
+    } catch (emailError) {
+      console.error("Error sending notification email:", emailError);
+      // Continue anyway — application is already saved locally
+    }
+
     setIsSubmitting(false);
     setIsApplyOpen(false);
 
-    // Reset state forms
+    // Reset form fields
     setFormData({
       fullName: "",
       email: "",
