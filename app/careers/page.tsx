@@ -115,13 +115,13 @@ export default function CareersPage() {
       email: formData.email,
       phone: formData.phone,
       portfolioUrl: formData.portfolioUrl || undefined,
-      resumeUrl: resumeFile || undefined,
       coverLetter: formData.coverLetter || undefined,
       timestamp: Date.now(),
       status: "Pending",
     };
 
     // Save to localStorage (keeps existing behavior)
+    // Note: Resume is NOT stored here — it's sent directly via API
     setContent((prev) => {
       const updatedApplications = [
         ...(prev.applications || []),
