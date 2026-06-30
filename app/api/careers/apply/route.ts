@@ -21,9 +21,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Set up Zoho SMTP transporter
+    // Set up Gmail SMTP transporter
     const transporter = nodemailer.createTransport({
-      host: "smtp.zoho.com",
+      host: "smtp.gmail.com",
       port: 465,
       secure: true,
       auth: {
