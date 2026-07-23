@@ -186,9 +186,9 @@ export default function CareersPage() {
                   <p className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-600 mb-3">
                     We are hiring
                   </p>
-                  <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-5">
-                    Vision.Impact.Excellence.Knowledge.
-                  </h1>
+                  {/* <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-5">
+                
+                  </h1> */}
                   <p className="text-slate-500 text-base max-w-xl mx-auto leading-relaxed">
                     The foundation of every solution we build and every success
                     we achieve. Join a high-performance team dedicated to
@@ -216,7 +216,7 @@ export default function CareersPage() {
                       href="#why-join-us"
                       className="rounded-md border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 transition hover:border-slate-300"
                     >
-                      Life At ViekTech
+                      Pecks & Benefits
                     </a>
                   </div>
                 </div>
