@@ -10,10 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -183,7 +180,7 @@ export default function CareersPage() {
               >
                 {/* ── Hero ── */}
                 <div className="text-center max-w-4xl mx-auto mb-20 pt-8">
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-600 mb-3">
+                  <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-600 mb-3">
                     We are hiring
                   </p>
                   {/* <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-5">
@@ -223,7 +220,7 @@ export default function CareersPage() {
 
                 {/* ── Why join us ── */}
                 <section id="why-join-us" className="mb-20">
-                  <p className="text-center text-sm font-semibold uppercase tracking-[0.18em] text-blue-600 mb-2">
+                  <p className="text-center text-sm font-bold uppercase tracking-[0.18em] text-blue-600 mb-2">
                     Why join us
                   </p>
                   <h2 className="text-center text-2xl font-bold text-slate-900 mb-2">
@@ -361,21 +358,51 @@ export default function CareersPage() {
                     What to expect
                   </h2>
                   <div className="relative">
-                    <div className="absolute left-0 right-0 top-5 hidden h-px bg-slate-200 md:block" aria-hidden />
+                    <div
+                      className="absolute left-0 right-0 top-5 hidden h-px bg-slate-200 md:block"
+                      aria-hidden
+                    />
                     <ol className="relative grid grid-cols-1 gap-10 sm:grid-cols-3 md:grid-cols-5 md:gap-4">
                       {[
-                        { n: 1, title: "Apply", body: "Submit your application and tell us about yourself." },
-                        { n: 2, title: "Resume Review", body: "We review your background and experience." },
-                        { n: 3, title: "Recruiter Call", body: "A friendly call to learn more about you and the role." },
-                        { n: 4, title: "Technical Interview", body: "Showcase your skills and problem-solving approach." },
-                        { n: 5, title: "Offer", body: "We make you an offer and celebrate together." },
+                        {
+                          n: 1,
+                          title: "Apply",
+                          body: "Submit your application and tell us about yourself.",
+                        },
+                        {
+                          n: 2,
+                          title: "Resume Review",
+                          body: "We review your background and experience.",
+                        },
+                        {
+                          n: 3,
+                          title: "Recruiter Call",
+                          body: "A friendly call to learn more about you and the role.",
+                        },
+                        {
+                          n: 4,
+                          title: "Technical Interview",
+                          body: "Showcase your skills and problem-solving approach.",
+                        },
+                        {
+                          n: 5,
+                          title: "Offer",
+                          body: "We make you an offer and celebrate together.",
+                        },
                       ].map((step) => (
-                        <li key={step.n} className="flex flex-col items-center text-center">
+                        <li
+                          key={step.n}
+                          className="flex flex-col items-center text-center"
+                        >
                           <div className="flex h-10 w-10 items-center justify-center rounded-full border border-blue-200 bg-white text-sm font-bold text-blue-600">
                             {step.n}
                           </div>
-                          <h3 className="mt-4 text-sm font-bold text-slate-900">{step.title}</h3>
-                          <p className="mt-1 max-w-[12rem] text-xs text-slate-500">{step.body}</p>
+                          <h3 className="mt-4 text-sm font-bold text-slate-900">
+                            {step.title}
+                          </h3>
+                          <p className="mt-1 max-w-[12rem] text-xs text-slate-500">
+                            {step.body}
+                          </p>
                         </li>
                       ))}
                     </ol>
@@ -445,15 +472,24 @@ export default function CareersPage() {
                   </div>
 
                   <div>
-                    <h3 className="text-base font-bold text-slate-900 mb-2">Role Description</h3>
-                    <p className="text-sm text-slate-500 leading-relaxed">{selectedJob.description}</p>
+                    <h3 className="text-base font-bold text-slate-900 mb-2">
+                      Role Description
+                    </h3>
+                    <p className="text-sm text-slate-500 leading-relaxed">
+                      {selectedJob.description}
+                    </p>
                   </div>
 
                   <div>
-                    <h3 className="text-base font-bold text-slate-900 mb-3">Core Requirements</h3>
+                    <h3 className="text-base font-bold text-slate-900 mb-3">
+                      Core Requirements
+                    </h3>
                     <ul className="space-y-2">
                       {selectedJob.requirements.map((req, index) => (
-                        <li key={index} className="flex items-start gap-2.5 text-sm text-slate-500 leading-relaxed">
+                        <li
+                          key={index}
+                          className="flex items-start gap-2.5 text-sm text-slate-500 leading-relaxed"
+                        >
                           <span className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-2 shrink-0" />
                           {req}
                         </li>
@@ -462,10 +498,15 @@ export default function CareersPage() {
                   </div>
 
                   <div>
-                    <h3 className="text-base font-bold text-slate-900 mb-3">Responsibilities</h3>
+                    <h3 className="text-base font-bold text-slate-900 mb-3">
+                      Responsibilities
+                    </h3>
                     <ul className="space-y-2">
                       {selectedJob.responsibilities.map((resp, index) => (
-                        <li key={index} className="flex items-start gap-2.5 text-sm text-slate-500 leading-relaxed">
+                        <li
+                          key={index}
+                          className="flex items-start gap-2.5 text-sm text-slate-500 leading-relaxed"
+                        >
                           <CheckCircle2 className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
                           {resp}
                         </li>
@@ -496,52 +537,135 @@ export default function CareersPage() {
               Apply for {selectedJob?.title}
             </DialogTitle>
             <DialogDescription className="text-slate-500">
-              Complete the fields below to submit your profile directly to our hiring team.
+              Complete the fields below to submit your profile directly to our
+              hiring team.
             </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleSubmitApplication} className="space-y-4 pt-2">
             <div className="space-y-1.5">
-              <Label htmlFor="fullName" className="text-sm font-semibold text-slate-700">Full Name *</Label>
-              <Input id="fullName" name="fullName" value={formData.fullName} onChange={handleInputChange} required placeholder="John Doe" />
+              <Label
+                htmlFor="fullName"
+                className="text-sm font-semibold text-slate-700"
+              >
+                Full Name *
+              </Label>
+              <Input
+                id="fullName"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleInputChange}
+                required
+                placeholder="John Doe"
+              />
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-sm font-semibold text-slate-700">Email Address *</Label>
-                <Input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} required placeholder="john@example.com" />
+                <Label
+                  htmlFor="email"
+                  className="text-sm font-semibold text-slate-700"
+                >
+                  Email Address *
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="john@example.com"
+                />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="phone" className="text-sm font-semibold text-slate-700">Phone Number *</Label>
-                <Input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleInputChange} required placeholder="+234..." />
+                <Label
+                  htmlFor="phone"
+                  className="text-sm font-semibold text-slate-700"
+                >
+                  Phone Number *
+                </Label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="+234..."
+                />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="portfolioUrl" className="text-sm font-semibold text-slate-700">Portfolio or GitHub URL</Label>
-              <Input id="portfolioUrl" name="portfolioUrl" type="url" value={formData.portfolioUrl} onChange={handleInputChange} placeholder="https://myportfolio.com" />
+              <Label
+                htmlFor="portfolioUrl"
+                className="text-sm font-semibold text-slate-700"
+              >
+                Portfolio or GitHub URL
+              </Label>
+              <Input
+                id="portfolioUrl"
+                name="portfolioUrl"
+                type="url"
+                value={formData.portfolioUrl}
+                onChange={handleInputChange}
+                placeholder="https://myportfolio.com"
+              />
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-sm font-semibold text-slate-700">Upload Resume (PDF, Word) *</Label>
+              <Label className="text-sm font-semibold text-slate-700">
+                Upload Resume (PDF, Word) *
+              </Label>
               <div className="border-2 border-dashed border-slate-200 rounded-xl p-4 text-center cursor-pointer hover:border-blue-300 relative group transition">
-                <input type="file" accept=".pdf,.doc,.docx" onChange={handleFileChange} className="absolute inset-0 opacity-0 cursor-pointer" required={!resumeFile} />
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleFileChange}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                  required={!resumeFile}
+                />
                 <Upload className="w-6 h-6 mx-auto mb-2 text-slate-400 group-hover:text-blue-600 transition" />
-                <p className="text-sm font-medium text-slate-700">{resumeName || "Click to choose a file"}</p>
-                <p className="text-xs text-slate-400 mt-1">Max file size: 2MB</p>
+                <p className="text-sm font-medium text-slate-700">
+                  {resumeName || "Click to choose a file"}
+                </p>
+                <p className="text-xs text-slate-400 mt-1">
+                  Max file size: 2MB
+                </p>
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="coverLetter" className="text-sm font-semibold text-slate-700">Brief Pitch / Cover Letter</Label>
-              <Textarea id="coverLetter" name="coverLetter" value={formData.coverLetter} onChange={handleInputChange} rows={4} placeholder="Tell us why you are a great fit for this position..." />
+              <Label
+                htmlFor="coverLetter"
+                className="text-sm font-semibold text-slate-700"
+              >
+                Brief Pitch / Cover Letter
+              </Label>
+              <Textarea
+                id="coverLetter"
+                name="coverLetter"
+                value={formData.coverLetter}
+                onChange={handleInputChange}
+                rows={4}
+                placeholder="Tell us why you are a great fit for this position..."
+              />
             </div>
 
             <div className="flex justify-end gap-3 pt-2">
-              <button type="button" onClick={() => setIsApplyOpen(false)} className="rounded-md border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-slate-300 transition">
+              <button
+                type="button"
+                onClick={() => setIsApplyOpen(false)}
+                className="rounded-md border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-slate-300 transition"
+              >
                 Cancel
               </button>
-              <button type="submit" disabled={isSubmitting} className="rounded-md bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60 min-w-[120px]">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="rounded-md bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60 min-w-[120px]"
+              >
                 {isSubmitting ? "Submitting..." : "Submit Profile"}
               </button>
             </div>
