@@ -180,12 +180,12 @@ export default function CareersPage() {
               >
                 {/* ── Hero ── */}
                 <div className="text-center max-w-4xl mx-auto mb-20 pt-8">
-                  <p className="text-lg font-bold uppercase tracking-[0.18em] text-blue-600 mb-3">
+                  {/* <p className="text-lg font-bold uppercase tracking-[0.18em] text-blue-600 mb-3">
                     We are hiring
-                  </p>
-                  {/* <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-5">
-                
-                  </h1> */}
+                  </p> */}
+                  <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-5">
+                    WE ARE HIRING
+                  </h1>
                   <p className="text-slate-500 text-base max-w-xl mx-auto leading-relaxed">
                     The foundation of every solution we build and every success
                     we achieve. Join a high-performance team dedicated to
@@ -220,12 +220,12 @@ export default function CareersPage() {
 
                 {/* ── Why join us ── */}
                 <section id="why-join-us" className="mb-20">
-                  <p className="text-center text-lg font-bold uppercase tracking-[0.18em] text-blue-600 mb-2">
-                    Why join us
+                  <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-5">
+                    WHY JOIN US
+                  </h1>
+                  <p className="text-center text-base font-bold uppercase tracking-[0.18em] text-blue-600 mb-2">
+                    More than a job
                   </p>
-                  <h2 className="text-center text-2xl font-bold text-slate-900 mb-2">
-                    More than a job title
-                  </h2>
                   <p className="text-center text-sm text-slate-500 max-w-md mx-auto mb-10">
                     A dual-purpose tech hub means your work shows up in two
                     places: production and the classroom.
