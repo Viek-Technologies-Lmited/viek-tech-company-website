@@ -183,7 +183,7 @@ export default function CareersPage() {
                   {/* <p className="text-lg font-bold uppercase tracking-[0.18em] text-blue-600 mb-3">
                     We are hiring
                   </p> */}
-                  <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-5">
+                  <h1 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 mb-5">
                     WE ARE HIRING
                   </h1>
                   <p className="text-slate-500 text-base max-w-xl mx-auto leading-relaxed">
@@ -220,7 +220,7 @@ export default function CareersPage() {
 
                 {/* ── Why join us ── */}
                 <section id="why-join-us" className="mb-20">
-                  <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-5">
+                  <h1 className="text-3xl md:text-4xl font-black tracking-tight text-center text-slate-900 mb-5">
                     WHY JOIN US
                   </h1>
                   <p className="text-center text-base font-bold uppercase tracking-[0.18em] text-blue-600 mb-2">
