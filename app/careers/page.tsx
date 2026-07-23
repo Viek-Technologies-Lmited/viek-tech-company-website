@@ -271,10 +271,10 @@ export default function CareersPage() {
                   </h2>
                   <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
                     {[
-                      { label: "Paid Learning" },
-                      { label: "Paid Time Off" },
-                      { label: "Healthcare" },
-                      { label: "Remote Work" },
+                      { label: "Learning & Development" },
+                      { label: "Leave" },
+                      { label: "Pension" },
+                      { label: "Hmo" },
                     ].map((b) => (
                       <div
                         key={b.label}
