@@ -37,6 +37,8 @@ import {
 } from "lucide-react";
 import {
   defaultContent,
+  loadSiteContent,
+  saveSiteContent,
   type SiteContent,
   type JobListing,
   type JobApplication,
@@ -50,7 +52,6 @@ export default function CareersPage() {
   const [isApplyOpen, setIsApplyOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Form State
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -62,15 +63,7 @@ export default function CareersPage() {
   const [resumeName, setResumeName] = useState<string>("");
 
   useEffect(() => {
-    const savedContent = localStorage.getItem("viek-site-content");
-    if (savedContent) {
-      try {
-        setContent(JSON.parse(savedContent));
-      } catch (e) {
-        console.error("Error synchronizing state schema", e);
-        setContent(defaultContent);
-      }
-    }
+    loadSiteContent().then(setContent);
   }, []);
 
   const handleInputChange = (
@@ -120,19 +113,14 @@ export default function CareersPage() {
       status: "Pending",
     };
 
-    // Save to localStorage (keeps existing behavior)
-    // Note: Resume is NOT stored here — it's sent directly via API
-    setContent((prev) => {
-      const updatedApplications = [
-        ...(prev.applications || []),
-        newApplication,
-      ];
-      const updatedContent = { ...prev, applications: updatedApplications };
-      localStorage.setItem("viek-site-content", JSON.stringify(updatedContent));
-      return updatedContent;
-    });
+    const updatedApplications = [
+      ...(content.applications || []),
+      newApplication,
+    ];
+    const updatedContent = { ...content, applications: updatedApplications };
+    setContent(updatedContent);
+    await saveSiteContent(updatedContent);
 
-    // Send email notification via API route
     try {
       const fd = new FormData();
       fd.append("fullName", formData.fullName);
@@ -142,7 +130,6 @@ export default function CareersPage() {
       fd.append("portfolioUrl", formData.portfolioUrl);
       fd.append("coverLetter", formData.coverLetter);
 
-      // Reconstruct the File from the data URL if it exists
       if (resumeFile && resumeName) {
         const response = await fetch(resumeFile);
         const blob = await response.blob();
@@ -156,17 +143,14 @@ export default function CareersPage() {
 
       if (!emailResponse.ok) {
         console.error("Email notification failed:", emailResponse.statusText);
-        // Don't fail the submission if email fails — the application is still saved
       }
     } catch (emailError) {
       console.error("Error sending notification email:", emailError);
-      // Continue anyway — application is already saved locally
     }
 
     setIsSubmitting(false);
     setIsApplyOpen(false);
 
-    // Reset form fields
     setFormData({
       fullName: "",
       email: "",
@@ -194,7 +178,6 @@ export default function CareersPage() {
         <div className="container mx-auto px-4 max-w-6xl">
           <AnimatePresence mode="wait">
             {!selectedJob ? (
-              // Main Open Positions View
               <motion.div
                 key="list-view"
                 initial={{ opacity: 0, y: 15 }}
@@ -287,7 +270,6 @@ export default function CareersPage() {
                 </div>
               </motion.div>
             ) : (
-              // Job Details Extended View
               <motion.div
                 key="details-view"
                 initial={{ opacity: 0, x: 20 }}
@@ -393,7 +375,6 @@ export default function CareersPage() {
         </div>
       </div>
 
-      {/* Application Form Dialog Popup */}
       <Dialog open={isApplyOpen} onOpenChange={setIsApplyOpen}>
         <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>

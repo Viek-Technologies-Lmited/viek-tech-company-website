@@ -44,6 +44,8 @@ import {
 } from "lucide-react";
 import {
   defaultContent,
+  loadSiteContent,
+  saveSiteContent,
   type SiteContent,
   type JobListing,
   type JobApplication,
@@ -62,7 +64,6 @@ export default function AdminDashboard() {
     null,
   );
 
-  // Fixed generic string type assignment constraint by enforcing explicit type structure mapping
   const [newJob, setNewJob] = useState({
     title: "",
     department: "",
@@ -81,15 +82,7 @@ export default function AdminDashboard() {
     } else {
       setIsAuthenticated(true);
       setAdminUser(user || "Admin");
-      const savedContent = localStorage.getItem("viek-site-content");
-      if (savedContent) {
-        try {
-          setContent(JSON.parse(savedContent));
-        } catch (e) {
-          console.error("Error reading storage contents", e);
-          setContent(defaultContent);
-        }
-      }
+      loadSiteContent().then(setContent);
     }
   }, [router]);
 
@@ -101,39 +94,39 @@ export default function AdminDashboard() {
 
   const handleSave = async () => {
     setIsSaving(true);
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    localStorage.setItem("viek-site-content", JSON.stringify(content));
+    const success = await saveSiteContent(content);
     setIsSaving(false);
     toast({
-      title: "Changes Saved",
-      description:
-        "Your platform contents and positions state have been written to disk.",
+      title: success ? "Changes Saved" : "Save Failed",
+      description: success
+        ? "Your changes are now live for everyone, on every device."
+        : "Something went wrong while saving — please try again.",
+      variant: success ? undefined : "destructive",
     });
   };
 
-  const handleDeleteMessage = (id: string) => {
+  const handleDeleteMessage = async (id: string) => {
     const updatedMessages = (content.messages || []).filter(
       (msg) => msg.id !== id,
     );
     const updatedContent = { ...content, messages: updatedMessages };
     setContent(updatedContent);
-    localStorage.setItem("viek-site-content", JSON.stringify(updatedContent));
+    await saveSiteContent(updatedContent);
     toast({
       title: "Message Deleted",
       description: "The message has been deleted successfully.",
     });
   };
 
-  const handleMarkAsRead = (id: string) => {
+  const handleMarkAsRead = async (id: string) => {
     const updatedMessages = (content.messages || []).map((msg) =>
       msg.id === id ? { ...msg, read: true } : msg,
     );
     const updatedContent = { ...content, messages: updatedMessages };
     setContent(updatedContent);
-    localStorage.setItem("viek-site-content", JSON.stringify(updatedContent));
+    await saveSiteContent(updatedContent);
   };
 
-  // Job Posting Controls
   const handleToggleJobStatus = (id: string) => {
     const updatedJobs = (content.jobs || []).map((job) =>
       job.id === id ? { ...job, isOpen: !job.isOpen } : job,
@@ -166,7 +159,7 @@ export default function AdminDashboard() {
       title: newJob.title,
       department: newJob.department,
       location: newJob.location || "Remote",
-      type: newJob.type, // Resolved via explicit State Typings config layout on init
+      type: newJob.type,
       description: newJob.description,
       requirements: newJob.requirements
         .split("\n")
@@ -194,11 +187,11 @@ export default function AdminDashboard() {
 
     toast({
       title: "Job Created!",
-      description: "Position is now live on the public recruitment directory.",
+      description:
+        "Position added — click Commit Global Save to publish it live.",
     });
   };
 
-  // Application Pipeline Handlers
   const handleUpdateApplicationStatus = (
     id: string,
     status: "Pending" | "Reviewed" | "Rejected",
@@ -246,7 +239,6 @@ export default function AdminDashboard() {
     });
   };
 
-  // Live Count Getters
   const unreadMessagesCount =
     content?.messages?.filter((msg) => !msg.read).length || 0;
   const pendingApplicationsCount =
@@ -291,7 +283,6 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-muted/30">
       <Toaster />
 
-      {/* Header */}
       <header className="bg-background border-b border-border sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -345,7 +336,6 @@ export default function AdminDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          {/* Top Metric Aggregations Row */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <Card>
               <CardContent className="p-4">
@@ -413,7 +403,6 @@ export default function AdminDashboard() {
             </Card>
           </div>
 
-          {/* Centralized Core Workspace Panel */}
           <Card>
             <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border pb-6 mb-6">
               <div>
@@ -498,7 +487,6 @@ export default function AdminDashboard() {
                   </TabsTrigger>
                 </TabsList>
 
-                {/* Hero Tab Component */}
                 <TabsContent value="hero" className="space-y-4 outline-none">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -557,7 +545,6 @@ export default function AdminDashboard() {
                   </div>
                 </TabsContent>
 
-                {/* Stats Tab Component */}
                 <TabsContent value="stats" className="space-y-4 outline-none">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -597,7 +584,6 @@ export default function AdminDashboard() {
                   </div>
                 </TabsContent>
 
-                {/* About Tab Component */}
                 <TabsContent value="about" className="space-y-4 outline-none">
                   <div className="space-y-2">
                     <Label>Mission Statement</Label>
@@ -625,7 +611,6 @@ export default function AdminDashboard() {
                   </div>
                 </TabsContent>
 
-                {/* Contact Tab Component */}
                 <TabsContent value="contact" className="space-y-4 outline-none">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -652,10 +637,8 @@ export default function AdminDashboard() {
                   </div>
                 </TabsContent>
 
-                {/* Jobs Management Tab Component */}
                 <TabsContent value="jobs" className="space-y-6 outline-none">
                   <div className="grid lg:grid-cols-5 gap-6">
-                    {/* Add Position Form Panel */}
                     <div className="lg:col-span-2 border border-border rounded-xl p-4 bg-muted/20 space-y-4 h-fit">
                       <h3 className="font-bold text-sm flex items-center gap-1.5 tracking-tight text-foreground uppercase">
                         <Plus className="w-4 h-4 text-primary" /> Add New
@@ -792,7 +775,6 @@ export default function AdminDashboard() {
                       </form>
                     </div>
 
-                    {/* Active Vacancies Directory List */}
                     <div className="lg:col-span-3 space-y-3">
                       <h3 className="font-bold text-sm tracking-tight uppercase text-muted-foreground px-1">
                         Active Directories ({totalJobsCount})
@@ -865,7 +847,6 @@ export default function AdminDashboard() {
                   </div>
                 </TabsContent>
 
-                {/* Talent Applications Tab Component */}
                 <TabsContent
                   value="applications"
                   className="space-y-4 outline-none"
@@ -939,7 +920,6 @@ export default function AdminDashboard() {
                                 </div>
                               </div>
 
-                              {/* Expanded Application Workspace Drawer */}
                               {expandedApplication === app.id && (
                                 <div className="mt-4 pt-4 border-t border-border grid md:grid-cols-3 gap-6 animate-fadeIn">
                                   <div className="md:col-span-2 space-y-3.5">
@@ -989,7 +969,6 @@ export default function AdminDashboard() {
                                   </div>
 
                                   <div className="space-y-4 flex flex-col justify-between">
-                                    {/* Action Matrix Status Hooks */}
                                     <div className="space-y-2">
                                       <h5 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                                         Application State Route
@@ -1049,7 +1028,6 @@ export default function AdminDashboard() {
                                       </div>
                                     </div>
 
-                                    {/* Download Document Action Wrapper */}
                                     {app.resumeUrl && (
                                       <div className="space-y-1.5">
                                         <h5 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
@@ -1101,7 +1079,6 @@ export default function AdminDashboard() {
                   )}
                 </TabsContent>
 
-                {/* Messages Tab Component */}
                 <TabsContent
                   value="messages"
                   className="space-y-4 outline-none"

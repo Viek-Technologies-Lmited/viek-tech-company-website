@@ -1,3 +1,5 @@
+import { supabase } from "./supabase";
+
 export interface ContactMessage {
   id: string;
   name: string;
@@ -293,3 +295,32 @@ export const defaultContent: SiteContent = {
   ],
   applications: [],
 };
+
+export async function loadSiteContent(): Promise<SiteContent> {
+  const { data, error } = await supabase
+    .from("site_content")
+    .select("data")
+    .eq("id", "main")
+    .single();
+
+  if (error || !data) {
+    console.error("Error loading site content:", error);
+    return defaultContent;
+  }
+
+  return { ...defaultContent, ...data.data };
+}
+
+export async function saveSiteContent(content: SiteContent): Promise<boolean> {
+  const { error } = await supabase
+    .from("site_content")
+    .update({ data: content, updated_at: new Date().toISOString() })
+    .eq("id", "main");
+
+  if (error) {
+    console.error("Error saving site content:", error);
+    return false;
+  }
+
+  return true;
+}
