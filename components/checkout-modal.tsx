@@ -48,8 +48,8 @@ export function CheckoutModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!fullname || !email) {
-      toast.error("Please enter your name and email");
+    if (!fullname || !email || !phone) {
+      toast.error("Please enter your name, email, and phone number");
       return;
     }
     if (!pricing) {
@@ -150,13 +150,15 @@ export function CheckoutModal({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number (optional)</Label>
+              <Label htmlFor="phone">Phone Number</Label>
               <Input
                 id="phone"
                 type="tel"
                 placeholder="+234 800 000 0000"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
+                required
+                minLength={7}
                 autoComplete="tel"
               />
             </div>

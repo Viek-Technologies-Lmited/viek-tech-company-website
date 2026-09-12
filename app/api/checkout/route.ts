@@ -7,7 +7,7 @@ import { initializePaystackTransaction } from "@/lib/paystack";
 const bodySchema = z.object({
   email: z.string().email(),
   fullname: z.string().min(2),
-  phone: z.string().optional(),
+  phone: z.string().min(7, "Phone number is required"),
   courseSlug: z.string(),
   currency: z.enum(["NGN", "USD"]),
 });

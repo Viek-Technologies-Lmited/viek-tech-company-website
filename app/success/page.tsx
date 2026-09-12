@@ -7,7 +7,14 @@ import { motion } from "framer-motion";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Clock, AlertCircle, BookOpen, Copy, ExternalLink } from "lucide-react";
+import {
+  CheckCircle,
+  Clock,
+  AlertCircle,
+  BookOpen,
+  Copy,
+  ExternalLink,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -159,7 +166,9 @@ function SuccessContent() {
         )}
         <div className="flex justify-between">
           <span className="text-sm text-muted-foreground">Course</span>
-          <span className="font-medium">{enrollment.course_slug}</span>
+          <span className="font-medium capitalize">
+            {enrollment.course_slug}
+          </span>
         </div>
         <div className="flex justify-between">
           <span className="text-sm text-muted-foreground">Amount</span>
@@ -195,8 +204,8 @@ function SuccessContent() {
             login details has been sent to <strong>{enrollment.email}</strong>.
           </p>
           <p className="text-sm text-muted-foreground">
-            If you didn&apos;t receive the email, you can also set your password from
-            the LMS login page using{" "}
+            If you didn&apos;t receive the email, you can also set your password
+            from the LMS login page using{" "}
             <a
               href={moodleUrl + "/login/index.php"}
               target="_blank"

@@ -89,18 +89,21 @@ async function moodleRequest<T>(
   const query = buildMoodleQuery({
     wstoken: cfg.token,
     wsfunction,
-    moodlewspluginformat: "json",
+    moodlewsrestformat: "json",
     ...params,
   });
-  const res = await fetch(`${base}?${query}`, { method: "GET" });
+  const url = `${base}?${query}`;
+  const res = await fetch(url, { method: "GET" });
+  const text = await res.text();
   if (!res.ok) {
     throw new Error(`Moodle API error: ${res.status} ${res.statusText}`);
   }
-  const data = (await res.json()) as T & {
+  const data = (text === "null" ? {} : JSON.parse(text)) as T & {
     exception?: string;
     errorcode?: string;
     message?: string;
   };
+
   if (data.exception || data.errorcode) {
     throw new Error(
       `Moodle error (${data.errorcode || data.exception}): ${data.message}`,
@@ -110,19 +113,29 @@ async function moodleRequest<T>(
 }
 
 function generatePassword(): string {
-  const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+  const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const lower = "abcdefghijklmnopqrstuvwxyz";
+  const digits = "0123456789";
+  const special = "!-#*";
+
   let pwd = "";
-  for (let i = 0; i < 16; i++) {
-    pwd += chars.charAt(Math.floor(Math.random() * chars.length));
+  pwd += upper.charAt(Math.floor(Math.random() * upper.length));
+  pwd += lower.charAt(Math.floor(Math.random() * lower.length));
+  pwd += digits.charAt(Math.floor(Math.random() * digits.length));
+  pwd += special.charAt(Math.floor(Math.random() * special.length));
+
+  const all = upper + lower + digits + special;
+  for (let i = 0; i < 12; i++) {
+    pwd += all.charAt(Math.floor(Math.random() * all.length));
   }
+
   return pwd;
 }
 
 function toSafeUsername(email: string, suffix: string): string {
   const local =
     email.split("@")[0].replace(/[^a-z0-9._-]+/gi, "").toLowerCase() || "user";
-  const short = (suffix || Math.random().toString(36).slice(2, 6)).slice(0, 6);
+  const short = (suffix || Math.random().toString(36).slice(2, 6)).slice(0, 6).toLowerCase();
   let name = `${local}-${short}`;
   if (!/^[a-z]/.test(name)) name = `u_${name}`;
   return name.slice(0, 60);
@@ -150,7 +163,7 @@ export async function createMoodleUser(input: {
 }): Promise<CreateUserResult> {
   const password = generatePassword();
   const username = toSafeUsername(input.email, input.idNumber || "");
-  const data = await moodleRequest<{ users?: MoodleUser[] }>(
+  const data = await moodleRequest<MoodleUser[] | { users?: MoodleUser[] }>(
     "core_user_create_users",
     {
       users: [
@@ -159,7 +172,6 @@ export async function createMoodleUser(input: {
           email: input.email,
           firstname: input.firstName,
           lastname: input.lastName,
-          fullname: `${input.firstName} ${input.lastName}`,
           auth: "manual",
           password,
           idnumber: input.idNumber || username,
@@ -168,7 +180,7 @@ export async function createMoodleUser(input: {
       ],
     },
   );
-  const user = data?.users?.[0];
+  const user = (Array.isArray(data) ? data[0] : data?.users?.[0]);
   if (!user) throw new Error("Moodle: user creation returned no user");
   return { user, password };
 }
@@ -176,8 +188,7 @@ export async function createMoodleUser(input: {
 async function setUserTheme(userId: number, theme: string): Promise<void> {
   try {
     await moodleRequest("core_user_set_user_preferences", {
-      userid: userId,
-      preferences: [{ type: "theme", value: theme }],
+      preferences: [{ name: "theme", value: theme, userid: userId }],
     });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
