@@ -179,6 +179,12 @@ export function Navbar() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
+                <NavigationMenuLink asChild className={navLinkStyles}>
+                  <Link href="/services">Services</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+
+              {/* <NavigationMenuItem>
                 <NavigationMenuTrigger className="bg-transparent">
                   Services
                 </NavigationMenuTrigger>
@@ -213,9 +219,9 @@ export function Navbar() {
                     </li>
                   </ul>
                 </NavigationMenuContent>
-              </NavigationMenuItem>
+              </NavigationMenuItem> */}
 
-              <NavigationMenuItem>
+              {/* <NavigationMenuItem>
                 <NavigationMenuTrigger className="bg-transparent">
                   Academy
                 </NavigationMenuTrigger>
@@ -265,9 +271,19 @@ export function Navbar() {
                     </li>
                   </ul>
                 </NavigationMenuContent>
+              </NavigationMenuItem> */}
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild className={navLinkStyles}>
+                  <Link href="/academy">Academy</Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
 
               <NavigationMenuItem>
+                <NavigationMenuLink asChild className={navLinkStyles}>
+                  <Link href="/testimonials">Testimonials</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              {/* <NavigationMenuItem>
                 <NavigationMenuTrigger className="bg-transparent">
                   Testimonials
                 </NavigationMenuTrigger>
@@ -309,7 +325,7 @@ export function Navbar() {
                     </li>
                   </ul>
                 </NavigationMenuContent>
-              </NavigationMenuItem>
+              </NavigationMenuItem> */}
 
               <NavigationMenuItem>
                 <NavigationMenuLink asChild className={navLinkStyles}>
@@ -347,7 +363,7 @@ export function Navbar() {
 
           <SheetContent
             side="right"
-            className="w-full sm:w-[400px] p-0 flex flex-col"
+            className="w-full sm:w-100 p-0 flex flex-col"
           >
             <SheetHeader className="p-6 border-b border-border text-left">
               <div className="flex items-center gap-3">

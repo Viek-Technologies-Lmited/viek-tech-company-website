@@ -126,3 +126,27 @@
     font-family: var(--font-source-serif), Georgia, Cambria, "Times New Roman", Times, serif;
   }
 }
+
+/* --- LearningPathsSlider horizontal scroll + scrollbar --- */
+.viek-path-slider {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.85 0.01 255) transparent;
+}
+.viek-path-slider::-webkit-scrollbar {
+  height: 6px;
+}
+.viek-path-slider::-webkit-scrollbar-track {
+  background: transparent;
+}
+.viek-path-slider::-webkit-scrollbar-thumb {
+  background-color: oklch(0.85 0.01 255);
+  border-radius: 3px;
+  cursor: pointer;
+}
+.viek-path-slider:hover::-webkit-scrollbar-thumb {
+  background-color: oklch(0.75 0.01 255);
+}
+.viek-snap-start {
+  scroll-snap-align: start;
+}
