@@ -313,12 +313,6 @@ export function Navbar() {
 
               <NavigationMenuItem>
                 <NavigationMenuLink asChild className={navLinkStyles}>
-                  <Link href="/blog">Blog</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild className={navLinkStyles}>
                   <Link href="/careers" className="text-black font-medium">
                     Careers
                   </Link>
@@ -384,12 +378,7 @@ export function Navbar() {
                   label="About Us"
                   onClick={() => setIsOpen(false)}
                 />
-                <MobileNavLink
-                  href="/blog"
-                  icon={BookOpen}
-                  label="Blog"
-                  onClick={() => setIsOpen(false)}
-                />
+
                 <MobileNavLink
                   href="/careers"
                   icon={Briefcase}
