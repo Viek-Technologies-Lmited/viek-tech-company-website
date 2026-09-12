@@ -1,4 +1,4 @@
-import { supabase } from "./supabase";
+import { getSiteContent, saveSiteContent as dbSaveSiteContent, type SiteContentData } from "./db";
 
 export interface ContactMessage {
   id: string;
@@ -30,7 +30,7 @@ export interface JobApplication {
   email: string;
   phone: string;
   portfolioUrl?: string;
-  resumeUrl?: string; // Stored as data URI / Mock path for local storage simulation
+  resumeUrl?: string;
   coverLetter?: string;
   timestamp: number;
   status: "Pending" | "Reviewed" | "Shortlisted" | "Rejected";
@@ -297,30 +297,15 @@ export const defaultContent: SiteContent = {
 };
 
 export async function loadSiteContent(): Promise<SiteContent> {
-  const { data, error } = await supabase
-    .from("site_content")
-    .select("data")
-    .eq("id", "main")
-    .single();
+  const data = await getSiteContent();
 
-  if (error || !data) {
-    console.error("Error loading site content:", error);
+  if (!data) {
     return defaultContent;
   }
 
-  return { ...defaultContent, ...data.data };
+  return { ...defaultContent, ...data };
 }
 
 export async function saveSiteContent(content: SiteContent): Promise<boolean> {
-  const { error } = await supabase
-    .from("site_content")
-    .update({ data: content, updated_at: new Date().toISOString() })
-    .eq("id", "main");
-
-  if (error) {
-    console.error("Error saving site content:", error);
-    return false;
-  }
-
-  return true;
+  return dbSaveSiteContent(content);
 }

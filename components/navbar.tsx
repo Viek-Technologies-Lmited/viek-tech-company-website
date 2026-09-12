@@ -402,7 +402,7 @@ export function Navbar() {
                   onClick={() => setIsOpen(false)}
                 />
 
-                <div className="mt-4 mb-2 px-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                {/* <div className="mt-4 mb-2 px-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                   Our Services
                 </div>
                 <div className="grid gap-1 border-l-2 border-muted ml-4 pl-2">
@@ -415,9 +415,15 @@ export function Navbar() {
                       isSubLink
                     />
                   ))}
-                </div>
+                </div> */}
+                <MobileNavLink
+                  href="/services"
+                  icon={Briefcase}
+                  label="Services"
+                  onClick={() => setIsOpen(false)}
+                />
 
-                <div className="mt-4 mb-2 px-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                {/* <div className="mt-4 mb-2 px-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                   Academy Courses
                 </div>
                 <div className="grid gap-1 border-l-2 border-muted ml-4 pl-2">
@@ -430,9 +436,15 @@ export function Navbar() {
                       isSubLink
                     />
                   ))}
-                </div>
+                </div> */}
+                <MobileNavLink
+                  href="/academy"
+                  icon={Briefcase}
+                  label="Academy"
+                  onClick={() => setIsOpen(false)}
+                />
 
-                <div className="mt-4 mb-2 px-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                {/* <div className="mt-4 mb-2 px-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                   Testimonials & Reviews
                 </div>
                 <div className="grid grid-cols-1 gap-1 border-l-2 border-muted ml-4 pl-2">
@@ -446,7 +458,13 @@ export function Navbar() {
                       isSubLink
                     />
                   ))}
-                </div>
+                </div> */}
+                <MobileNavLink
+                  href="/testimonials"
+                  icon={Briefcase}
+                  label="Testimonials"
+                  onClick={() => setIsOpen(false)}
+                />
               </div>
             </div>
 

@@ -153,3 +153,190 @@ export async function linkMoodleUser(
   `) as unknown as Enrollment[];
   return rows.length ? rows[0] : null;
 }
+
+export interface SiteContentData {
+  hero: {
+    badge: string;
+    title: string;
+    highlight: string;
+    description: string;
+    primaryCta: string;
+    secondaryCta: string;
+  };
+  stats: {
+    projects: string;
+    students: string;
+    clients: string;
+    successRate: string;
+  };
+  features: Array<{
+    title: string;
+    description: string;
+    icon: string;
+  }>;
+  services: Array<{
+    title: string;
+    description: string;
+    features: string[];
+    icon: string;
+  }>;
+  about: {
+    mission: string;
+    vision: string;
+    pitch: string;
+  };
+  coreValues: Array<{
+    letter: string;
+    title: string;
+    description: string;
+  }>;
+  testimonials: Array<{
+    name: string;
+    role: string;
+    company: string;
+    content: string;
+    image: string;
+    rating: number;
+  }>;
+  contact: {
+    email: string;
+    phone: string;
+    address: string;
+  };
+  messages: Array<{
+    id: string;
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+    timestamp: number;
+    read: boolean;
+  }>;
+  jobs: Array<{
+    id: string;
+    title: string;
+    department: string;
+    location: string;
+    type: "Full-time" | "Part-time" | "Contract" | "Remote";
+    description: string;
+    requirements: string[];
+    responsibilities: string[];
+    isOpen: boolean;
+  }>;
+  applications: Array<{
+    id: string;
+    jobId: string;
+    jobTitle: string;
+    fullName: string;
+    email: string;
+    phone: string;
+    portfolioUrl?: string;
+    resumeUrl?: string;
+    coverLetter?: string;
+    timestamp: number;
+    status: "Pending" | "Reviewed" | "Shortlisted" | "Rejected";
+  }>;
+}
+
+async function ensureSiteContentSchema(): Promise<void> {
+  const sql = getSql();
+  await sql`
+    CREATE TABLE IF NOT EXISTS site_content (
+      id          TEXT PRIMARY KEY DEFAULT 'main',
+      data        JSONB NOT NULL DEFAULT '{}'::jsonb,
+      updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+  `;
+  await sql`
+    INSERT INTO site_content (id, data)
+    VALUES ('main', '{}'::jsonb)
+    ON CONFLICT (id) DO NOTHING;
+  `;
+}
+
+export async function getSiteContent(): Promise<SiteContentData | null> {
+  await ensureSiteContentSchema();
+  const sql = getSql();
+  const rows = (await sql`
+    SELECT data FROM site_content WHERE id = 'main' LIMIT 1
+  `) as unknown as { data: SiteContentData }[];
+  return rows.length ? rows[0].data : null;
+}
+
+export async function saveSiteContent(data: SiteContentData): Promise<boolean> {
+  await ensureSiteContentSchema();
+  const sql = getSql();
+  await sql`
+    UPDATE site_content
+    SET data = ${JSON.stringify(data)}, updated_at = now()
+    WHERE id = 'main'
+  `;
+  return true;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  name: string | null;
+  password_hash: string;
+  role: "admin" | "user";
+  created_at: Date;
+  updated_at: Date;
+}
+
+async function ensureUserSchema(): Promise<void> {
+  const sql = getSql();
+  await sql`
+    CREATE TABLE IF NOT EXISTS users (
+      id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      email         VARCHAR(254) NOT NULL UNIQUE,
+      name          VARCHAR(254),
+      password_hash VARCHAR(255) NOT NULL,
+      role          VARCHAR(20) NOT NULL DEFAULT 'user',
+      created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+      updated_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+  `;
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+  `;
+}
+
+export async function createUser(params: {
+  email: string;
+  name: string | null;
+  passwordHash: string;
+  role?: "admin" | "user";
+}): Promise<User> {
+  await ensureUserSchema();
+  const sql = getSql();
+  const rows = (await sql`
+    INSERT INTO users (email, name, password_hash, role)
+    VALUES (${params.email}, ${params.name}, ${params.passwordHash}, ${params.role ?? "user"})
+    ON CONFLICT (email) DO UPDATE
+      SET name = EXCLUDED.name,
+          password_hash = EXCLUDED.password_hash,
+          role = EXCLUDED.role,
+          updated_at = now()
+    RETURNING *
+  `) as unknown as User[];
+  return rows[0];
+}
+
+export async function getUserByEmail(email: string): Promise<User | null> {
+  await ensureUserSchema();
+  const sql = getSql();
+  const rows = (await sql`
+    SELECT * FROM users WHERE email = ${email} LIMIT 1
+  `) as unknown as User[];
+  return rows.length ? rows[0] : null;
+}
+
+export async function getUserById(id: string): Promise<User | null> {
+  await ensureUserSchema();
+  const sql = getSql();
+  const rows = (await sql`
+    SELECT * FROM users WHERE id = ${id} LIMIT 1
+  `) as unknown as User[];
+  return rows.length ? rows[0] : null;
+}

@@ -50,72 +50,6 @@ const testimonialTransition = {
   duration: 0.4,
 };
 
-// const courses = [
-//   {
-//     id: "course-UI/UX Design",
-//     title: "UI/UX Design",
-//     image: "/images/uiux.png",
-//     level: "Beginner to Advanced",
-//     rating: "4.9",
-//     reviews: "450+",
-//     price: "₦150,000",
-//   },
-//   {
-//     id: "course-cyber-security",
-//     title: "Cyber Security",
-//     image: "/images/cybersecurity.jpeg",
-//     level: "Beginner to Advanced",
-//     rating: "4.9",
-//     reviews: "450+",
-//     price: "₦400,000",
-//   },
-//   {
-//     id: "course-web-development",
-//     title: "Web Development",
-//     image: "/images/full-stack-development.png",
-//     level: "Beginner to Advanced",
-//     rating: "4.9",
-//     reviews: "450+",
-//     price: "₦350,000",
-//   },
-//   {
-//     id: "course-cloud-engineering",
-//     title: "Cloud Engineering",
-//     image: "/images/web-development.jpeg",
-//     level: "Beginner to Advanced",
-//     rating: "4.9",
-//     reviews: "450+",
-//     price: "₦500,000",
-//   },
-//   {
-//     id: "course-data-engineering",
-//     title: "Data Engineering",
-//     image: "/images/data-analysis.jpeg",
-//     level: "Beginner to Advanced",
-//     rating: "4.9",
-//     reviews: "450+",
-//     price: "₦300,000",
-//   },
-//   {
-//     id: "course-virtual-assistant",
-//     title: "Virtual Assistant",
-//     image: "/images/web-development.jpeg",
-//     level: "Beginner to Advanced",
-//     rating: "4.9",
-//     reviews: "450+",
-//     price: "₦80,000",
-//   },
-//   {
-//     id: "course-project-management",
-//     title: "Project Management",
-//     image: "/images/web-development.jpeg",
-//     level: "Beginner to Advanced",
-//     rating: "4.9",
-//     reviews: "450+",
-//     price: "₦100,000",
-//   },
-// ];
-
 const courses = courseList;
 const testimonySlides = [
   {
@@ -275,7 +209,7 @@ export default function AcademyPage() {
                   <UsersRound className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-gray-900">10K+</div>
+                  <div className="text-2xl font-bold text-gray-900">1K+</div>
                   <span className="text-gray-600 text-xs">
                     Students Enrolled
                   </span>
@@ -287,7 +221,7 @@ export default function AcademyPage() {
                   <Calendar className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-gray-900">200+</div>
+                  <div className="text-2xl font-bold text-gray-900">20+</div>
                   <span className="text-gray-600 text-xs">Courses</span>
                 </div>
               </div>
@@ -297,7 +231,7 @@ export default function AcademyPage() {
                   <CircleUserRound className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-gray-900">50+</div>
+                  <div className="text-2xl font-bold text-gray-900">20+</div>
                   <span className="text-gray-600 text-xs">
                     Expert Instructors
                   </span>
@@ -327,8 +261,8 @@ export default function AcademyPage() {
                   className="object-contain"
                 />
                 <Image
-                  src="/images/Microsoft_Logo.png"
-                  alt="Google"
+                  src="/images/microsoft_Logo.png"
+                  alt="Microsoft"
                   width={80}
                   height={50}
                   className="object-contain"
@@ -391,10 +325,12 @@ export default function AcademyPage() {
                   size="lg"
                   className=" px-8 text-sm transition-all duration-300 group cursor-pointer my-6"
                 >
-                  <div>
-                    View all Courses
-                    <MoveRight className="ml-2  group-hover:translate-x-1 transition-transform" />
-                  </div>
+                  <Link href="/academy/courses">
+                    <div>
+                      View all Courses
+                      {/* <MoveRight className="ml-2  group-hover:translate-x-1 transition-transform" /> */}
+                    </div>
+                  </Link>
                 </Button>
               </div>
 
@@ -519,7 +455,7 @@ export default function AcademyPage() {
             </div>
 
             <div className=" w-full rounded-2xl bg-[url('/images/Physical_Class.jpeg')] bg-cover bg-center text-black p-4 md:min-w-100">
-              <div className=" text-[#0fb3ff]">
+              <div className=" text-[#ff7100]">
                 <h5 className=" font-bold">Self-Paced Tech Tracks</h5>
                 <div>
                   <ul>

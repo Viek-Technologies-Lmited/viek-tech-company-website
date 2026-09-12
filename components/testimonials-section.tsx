@@ -1,28 +1,31 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react"
-import Image from "next/image"
-import type { SiteContent } from "@/lib/site-content"
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
+import Image from "next/image";
+import type { SiteContent } from "@/lib/site-content";
 
 interface TestimonialsSectionProps {
-  content: SiteContent
+  content: SiteContent;
 }
 
 export function TestimonialsSection({ content }: TestimonialsSectionProps) {
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const next = () => {
-    setCurrentIndex((prev) => (prev + 1) % content.testimonials.length)
-  }
+    setCurrentIndex((prev) => (prev + 1) % content.testimonials.length);
+  };
 
   const prev = () => {
-    setCurrentIndex((prev) => (prev - 1 + content.testimonials.length) % content.testimonials.length)
-  }
+    setCurrentIndex(
+      (prev) =>
+        (prev - 1 + content.testimonials.length) % content.testimonials.length,
+    );
+  };
 
   return (
     <section id="testimonials" className="py-20 scroll-mt-16">
@@ -34,14 +37,18 @@ export function TestimonialsSection({ content }: TestimonialsSectionProps) {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <Badge variant="secondary" className="mb-4 bg-primary/10 text-primary border-primary/20">
+          <Badge
+            variant="secondary"
+            className="mb-4 bg-primary/10 text-primary border-primary/20"
+          >
             TESTIMONIALS
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
-            Trusted by Businesses & Learners
+            Trusted by Businesses
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            See what our clients and students have to say about their experience with Viek Tech.
+            See what our clients and students have to say about their experience
+            with Viek Tech.
           </p>
         </motion.div>
 
@@ -67,15 +74,23 @@ export function TestimonialsSection({ content }: TestimonialsSectionProps) {
                           {content.testimonials[currentIndex].name.charAt(0)}
                         </div>
                         <div>
-                          <p className="font-semibold text-foreground">{content.testimonials[currentIndex].name}</p>
+                          <p className="font-semibold text-foreground">
+                            {content.testimonials[currentIndex].name}
+                          </p>
                           <p className="text-sm text-muted-foreground">
-                            {content.testimonials[currentIndex].role} at {content.testimonials[currentIndex].company}
+                            {content.testimonials[currentIndex].role} at{" "}
+                            {content.testimonials[currentIndex].company}
                           </p>
                         </div>
                       </div>
                       <div className="flex gap-1">
-                        {[...Array(content.testimonials[currentIndex].rating)].map((_, i) => (
-                          <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                        {[
+                          ...Array(content.testimonials[currentIndex].rating),
+                        ].map((_, i) => (
+                          <Star
+                            key={i}
+                            className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                          />
                         ))}
                       </div>
                     </div>
@@ -86,7 +101,12 @@ export function TestimonialsSection({ content }: TestimonialsSectionProps) {
           </div>
 
           <div className="flex items-center justify-center gap-4 mt-8">
-            <Button variant="outline" size="icon" onClick={prev} className="rounded-full">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={prev}
+              className="rounded-full"
+            >
               <ChevronLeft className="w-5 h-5" />
               <span className="sr-only">Previous testimonial</span>
             </Button>
@@ -102,7 +122,12 @@ export function TestimonialsSection({ content }: TestimonialsSectionProps) {
                 />
               ))}
             </div>
-            <Button variant="outline" size="icon" onClick={next} className="rounded-full">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={next}
+              className="rounded-full"
+            >
               <ChevronRight className="w-5 h-5" />
               <span className="sr-only">Next testimonial</span>
             </Button>
@@ -110,5 +135,5 @@ export function TestimonialsSection({ content }: TestimonialsSectionProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }
