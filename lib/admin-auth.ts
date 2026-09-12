@@ -1,18 +1,14 @@
-// Simple admin credentials - in production, use proper authentication
-export const ADMIN_CREDENTIALS = [
-  {
-    username: "Viektech",
-    password: "123456",
-  },
-];
+import { auth } from "./auth";
 
-export function validateCredentials(
-  username: string,
-  password: string,
-): boolean {
-  return ADMIN_CREDENTIALS.some(
-    (cred) =>
-      cred.username.toLowerCase() === username.toLowerCase() &&
-      cred.password === password,
-  );
+export async function isAdmin(): Promise<boolean> {
+  const session = await auth();
+  return session?.user?.role === "admin";
+}
+
+export async function requireAdmin(): Promise<{ user: { id: string; email: string; name?: string | null; role: string } }> {
+  const session = await auth();
+  if (!session?.user || session.user.role !== "admin") {
+    throw new Error("Unauthorized");
+  }
+  return { user: session.user };
 }

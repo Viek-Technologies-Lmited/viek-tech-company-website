@@ -436,12 +436,12 @@ export const courseList = [
     level: "Beginner",
   },
   {
-    name: "graphic design & content",
+    name: "graphic design",
     duration: "3 Months",
     standardFee: 50000,
     foundingCohortFee: 35000,
     description:
-      "Graphic Design & Content teaches learners how to communicate ideas visually and create digital content for businesses, brands and online platforms. The program combines design fundamentals, branding, content creation and modern AI-assisted creative workflows.",
+      "Graphic Design teaches learners how to communicate ideas visually and create digital content for businesses, brands and online platforms. The program combines design fundamentals, branding, content creation and modern AI-assisted creative workflows.",
     targetLearners: [
       "Beginners",
       "Students",
