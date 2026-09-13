@@ -50,6 +50,7 @@ export const courseList = [
     rating: "4.8",
     reviews: "300+",
     level: "Beginner to Advanced",
+    category: "digital literacy",
     // careerPathway:
     //   "VIEK CORE → VIEK SPECIALIZATION → VIEK ADVANCED",
   },
@@ -80,7 +81,7 @@ export const courseList = [
       "No-Code Automation",
       "AI-Assisted Content",
       "Responsible AI",
-      "AI Project Development",
+      "ai project development",
     ],
     practicalOutcome:
       "Learners will design and demonstrate an AI-powered or automated workflow that solves a real problem.",
@@ -89,6 +90,7 @@ export const courseList = [
     rating: "4.9",
     reviews: "400+",
     level: "Beginner to Advanced",
+    category: "ai & automation",
     // careerPathway:
     //   "AI & Automation → VIEK SPECIALIZATION → VIEK ADVANCED",
   },
@@ -127,6 +129,7 @@ export const courseList = [
     rating: "4.9",
     reviews: "450+",
     level: "Beginner to Advanced",
+    category: "data & technology",
     // careerPathway:
     //   "Data Analytics → Data Engineering → Data Science",
   },
@@ -165,6 +168,7 @@ export const courseList = [
     rating: "4.8",
     reviews: "350+",
     level: "Beginner to Advanced",
+    category: "security",
     // careerPathway:
     //   "Cybersecurity → Network Security → Ethical Hacking",
   },
@@ -203,6 +207,7 @@ export const courseList = [
     rating: "4.9",
     reviews: "500+",
     level: "Beginner to Advanced",
+    category: "software development",
     // careerPathway:
     //   "Software Development → Web Development → Full Stack Development",
   },
@@ -240,7 +245,8 @@ export const courseList = [
     image: "/images/cloud-engineering.jpeg",
     rating: "4.8",
     reviews: "400+",
-    level: "Intermediate",
+    level: "Beginner to Advanced",
+    category: "cloud computing",
     // careerPathway:
     //   "Cloud Engineering → Cloud Architecture → DevOps Engineering",
   },
@@ -279,6 +285,7 @@ export const courseList = [
     rating: "4.9",
     reviews: "450+",
     level: "Beginner to Advanced",
+    category: "uiux design",
     // careerPathway:
     //   "Product Design → UX Design → UI/UX Design",
   },
@@ -316,7 +323,8 @@ export const courseList = [
     image: "/images/digital_marketing.jpeg",
     rating: "4.8",
     reviews: "400+",
-    level: "Beginner",
+    level: "Beginner to Advanced",
+    category: "business & marketing",
     // careerPathway:
     //   "Digital Marketing → Social Media Marketing → Digital Marketing Specialist",
   },
@@ -356,6 +364,7 @@ export const courseList = [
     rating: "4.9",
     reviews: "450+",
     level: "Beginner to Advanced",
+    category: "business & management",
     // careerPathway:
     //   "Project Management → Agile Project Management → Project Management Professional",
   },
@@ -393,7 +402,8 @@ export const courseList = [
     image: "/images/digital-operations.jpeg",
     rating: "4.8",
     reviews: "400+",
-    level: "Beginner",
+    level: "Beginner to Advanced",
+    category: "business operations",
     // careerPathway:
     //   "Digital Operations → Remote Team Management → Operations Management",
   },
@@ -433,7 +443,8 @@ export const courseList = [
     image: "/images/virtual-assistant.jpeg",
     rating: "4.7",
     reviews: "300+",
-    level: "Beginner",
+    level: "Beginner to Advanced",
+    category: "business support",
   },
   {
     name: "graphic design",
@@ -469,7 +480,8 @@ export const courseList = [
     image: "/images/graphics-design.jpeg",
     rating: "4.8",
     reviews: "350+",
-    level: "Beginner",
+    level: "Beginner to Advanced",
+    category: "design",
     // careerPathway:
     //   "Graphic Design & Content → Visual Communication → Creative Direction",
   },
