@@ -41,6 +41,10 @@ import {
   FileDown,
   Globe,
   MapPin,
+  GraduationCap,
+  DollarSign,
+  CheckCircle2,
+  AlertTriangle,
 } from "lucide-react";
 import {
   defaultContent,
@@ -48,6 +52,7 @@ import {
   type JobListing,
   type JobApplication,
 } from "@/lib/site-content";
+import type { EnrollmentDashboardData } from "@/lib/db";
 import { toast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -59,11 +64,13 @@ interface AdminDashboardClientProps {
     role: string;
   };
   initialContent: SiteContent;
+  enrollmentData: EnrollmentDashboardData;
 }
 
 export default function AdminDashboardClient({
   user,
   initialContent,
+  enrollmentData,
 }: AdminDashboardClientProps) {
   const router = useRouter();
   const [content, setContent] = useState<SiteContent>(initialContent);
@@ -260,6 +267,8 @@ export default function AdminDashboardClient({
     content?.applications?.filter((app) => app.status === "Pending").length ||
     0;
   const totalJobsCount = content?.jobs?.length || 0;
+  const formatNaira = (cents: number) =>
+    `₦${Math.round(cents / 100).toLocaleString()}`;
 
   const updateHero = (field: keyof typeof content.hero, value: string) => {
     setContent((prev) => ({ ...prev, hero: { ...prev.hero, [field]: value } }));
@@ -343,7 +352,7 @@ export default function AdminDashboardClient({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
@@ -408,6 +417,19 @@ export default function AdminDashboardClient({
                 </div>
               </CardContent>
             </Card>
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-violet-100 flex items-center justify-center">
+                    <GraduationCap className="w-5 h-5 text-violet-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">{enrollmentData.total}</p>
+                    <p className="text-xs text-muted-foreground">LMS Enrollments</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           <Card>
@@ -449,6 +471,11 @@ export default function AdminDashboardClient({
                   <TabsTrigger value="contact" className="gap-1.5">
                     <Settings className="w-4 h-4" />
                     Contact
+                  </TabsTrigger>
+
+                  <TabsTrigger value="lms" className="gap-1.5">
+                    <GraduationCap className="w-4 h-4" />
+                    LMS Overview
                   </TabsTrigger>
 
                   <TabsTrigger value="jobs" className="gap-1.5 relative">
@@ -642,6 +669,103 @@ export default function AdminDashboardClient({
                       onChange={(e) => updateContact("address", e.target.value)}
                     />
                   </div>
+                </TabsContent>
+
+                <TabsContent value="lms" className="space-y-6 outline-none">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    {[
+                      { label: "Paid", value: enrollmentData.paid, icon: DollarSign, tone: "text-emerald-600 bg-emerald-100" },
+                      { label: "Moodle Enrolled", value: enrollmentData.moodleEnrolled, icon: CheckCircle2, tone: "text-blue-600 bg-blue-100" },
+                      { label: "Pending Payment", value: enrollmentData.pending, icon: Clock, tone: "text-amber-600 bg-amber-100" },
+                      { label: "Failed", value: enrollmentData.failed, icon: AlertTriangle, tone: "text-red-600 bg-red-100" },
+                    ].map((metric) => (
+                      <Card key={metric.label}>
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${metric.tone}`}>
+                              <metric.icon className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <p className="text-xl font-bold">{metric.value}</p>
+                              <p className="text-xs text-muted-foreground">{metric.label}</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-base">LMS Revenue</CardTitle>
+                        <CardDescription>Successful Paystack enrollments</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-3xl font-bold text-foreground">
+                          {formatNaira(enrollmentData.revenueCents)}
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-2">
+                          {enrollmentData.moodleEnrolled} learner{enrollmentData.moodleEnrolled === 1 ? "" : "s"} connected to Moodle
+                        </p>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-base">Course Demand</CardTitle>
+                        <CardDescription>Enrollment volume by course</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        {enrollmentData.courses.length > 0 ? enrollmentData.courses.slice(0, 5).map((course) => (
+                          <div key={course.courseSlug} className="flex items-center justify-between gap-4 text-sm">
+                            <span className="truncate font-medium">{course.courseSlug.replace(/-/g, " ")}</span>
+                            <Badge variant="secondary">{course.count}</Badge>
+                          </div>
+                        )) : <p className="text-sm text-muted-foreground">No enrollments yet.</p>}
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-base">Recent Learners</CardTitle>
+                      <CardDescription>Latest checkout and Moodle provisioning activity</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {enrollmentData.recent.length > 0 ? (
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-sm">
+                            <thead>
+                              <tr className="border-b text-left text-muted-foreground">
+                                <th className="pb-3 font-medium">Learner</th>
+                                <th className="pb-3 font-medium">Course</th>
+                                <th className="pb-3 font-medium">Status</th>
+                                <th className="pb-3 text-right font-medium">Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {enrollmentData.recent.map((enrollment) => (
+                                <tr key={enrollment.id} className="border-b last:border-0">
+                                  <td className="py-3">
+                                    <p className="font-medium">{enrollment.fullname}</p>
+                                    <p className="text-xs text-muted-foreground">{enrollment.email}</p>
+                                  </td>
+                                  <td className="py-3 capitalize">{enrollment.course_slug.replace(/-/g, " ")}</td>
+                                  <td className="py-3">
+                                    <Badge variant={enrollment.status === "failed" ? "destructive" : "secondary"}>
+                                      {enrollment.status.replace(/_/g, " ")}
+                                    </Badge>
+                                  </td>
+                                  <td className="py-3 text-right font-medium">{formatNaira(Number(enrollment.amount_cents))}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      ) : <p className="text-sm text-muted-foreground">No learner activity yet.</p>}
+                    </CardContent>
+                  </Card>
                 </TabsContent>
 
                 <TabsContent value="jobs" className="space-y-6 outline-none">
