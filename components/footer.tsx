@@ -1,16 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image"; // Import the Image component
-import {
-  Facebook,
-  Twitter,
-  Linkedin,
-  Instagram,
-  Youtube,
-  Mail,
-  ArrowRight,
-} from "lucide-react";
+import Image from "next/image";
+import { BriefcaseBusiness, Mail, ArrowRight } from "lucide-react";
+import { siFacebook, siInstagram, siX, type SimpleIcon } from "simple-icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -30,6 +23,27 @@ const TiktokIcon = (props: React.SVGProps<SVGSVGElement>) => (
   >
     <path d="M9 12a4 4 0 1 0 4 4V4a8 8 0 0 0 8 8h-2a6 6 0 0 1-6-6v12a6 6 0 1 1-6-6z" />
   </svg>
+);
+
+const SimpleBrandIcon = ({
+  icon,
+  ...props
+}: React.SVGProps<SVGSVGElement> & { icon: SimpleIcon }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+    <path d={icon.path} />
+  </svg>
+);
+
+const FacebookIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <SimpleBrandIcon icon={siFacebook} {...props} />
+);
+
+const XIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <SimpleBrandIcon icon={siX} {...props} />
+);
+
+const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <SimpleBrandIcon icon={siInstagram} {...props} />
 );
 
 const quickLinks = [
@@ -57,16 +71,24 @@ const legal = [
 const socialLinks = [
   {
     href: "https://www.facebook.com/share/18gDp7DDqF/?mibextid=wwXIfr",
-    icon: Facebook,
+    icon: FacebookIcon,
     label: "Facebook",
   },
   {
     href: "https://x.com/viektechno83gs?s=21",
-    icon: Twitter,
-    label: "Twitter",
+    icon: XIcon,
+    label: "X",
   },
-  { href: "#", icon: Linkedin, label: "LinkedIn" },
-  { href: "#", icon: Instagram, label: "Instagram" },
+  {
+    href: "https://www.linkedin.com/company/136105917/",
+    icon: BriefcaseBusiness,
+    label: "LinkedIn",
+  },
+  {
+    href: "https://www.instagram.com/viektechnologies.ng?stkn=MXBkODNvcjJpdXh4Zg%3D%3D&utm_source=qr",
+    icon: InstagramIcon,
+    label: "Instagram",
+  },
   {
     href: "https://www.tiktok.com/@viek_technologies?_r=1&_t=ZS-96MIcQVDoto",
     icon: TiktokIcon,
@@ -173,7 +195,7 @@ export function Footer() {
                   placeholder="Enter your email"
                   className="bg-background/10 border-background/20 text-background placeholder:text-background/50"
                 />
-                <Button size="icon" className="flex-shrink-0">
+                <Button size="icon" className="shrink-0">
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>

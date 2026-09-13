@@ -46,33 +46,8 @@ const levels = ["All", "Beginner", "Beginner to Advanced", "Intermediate"];
 
 const categories = [
   "All",
-  "Development",
-  "Design",
-  "Data & AI",
-  "Security",
-  "Cloud & DevOps",
-  "Business & Marketing",
-  "Operations",
+  ...new Set(courseList.map((course) => course.category)),
 ];
-
-const getCategory = (course: CourseListType): string => {
-  const name = course.name.toLowerCase();
-  if (name.includes("software") || name.includes("cloud")) return "Development";
-  if (name.includes("product design") || name.includes("graphic"))
-    return "Design";
-  if (name.includes("data") || name.includes("ai")) return "Data & AI";
-  if (name.includes("cyber")) return "Security";
-  if (name.includes("cloud")) return "Cloud & DevOps";
-  if (
-    name.includes("marketing") ||
-    name.includes("project") ||
-    name.includes("operations") ||
-    name.includes("virtual")
-  )
-    return "Business & Marketing";
-  if (name.includes("viek core")) return "Business & Marketing";
-  return "Development";
-};
 
 export default function AllCoursesPage() {
   const [selectedLevel, setSelectedLevel] = useState("All");
@@ -85,7 +60,7 @@ export default function AllCoursesPage() {
       const levelMatch =
         selectedLevel === "All" || course.level === selectedLevel;
       const categoryMatch =
-        selectedCategory === "All" || getCategory(course) === selectedCategory;
+        selectedCategory === "All" || course.category === selectedCategory;
       return levelMatch && categoryMatch;
     });
   }, [selectedLevel, selectedCategory]);
@@ -303,7 +278,7 @@ export default function AllCoursesPage() {
                       {course.level}
                     </span>
                     <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600">
-                      {getCategory(course)}
+                      {course.category}
                     </span>
                   </div>
 
@@ -331,7 +306,7 @@ export default function AllCoursesPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-2xl font-bold text-foreground">
-                        ₦{course.foundingCohortFee.toLocaleString()}
+                        ₦{course.standardFee.toLocaleString()}
                       </span>
                     </div>
                     <Button
@@ -388,7 +363,7 @@ export default function AllCoursesPage() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="px-8 border-primary text-primary hover:bg-primary/5"
+                className="px-8 border-primary text-primary"
               >
                 <Link href="/contact">Contact Advisory</Link>
               </Button>

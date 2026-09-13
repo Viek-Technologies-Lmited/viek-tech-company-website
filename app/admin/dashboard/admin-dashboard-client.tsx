@@ -44,8 +44,6 @@ import {
 } from "lucide-react";
 import {
   defaultContent,
-  loadSiteContent,
-  saveSiteContent,
   type SiteContent,
   type JobListing,
   type JobApplication,
@@ -62,7 +60,9 @@ interface AdminDashboardClientProps {
   };
 }
 
-export default function AdminDashboardClient({ user }: AdminDashboardClientProps) {
+export default function AdminDashboardClient({
+  user,
+}: AdminDashboardClientProps) {
   const router = useRouter();
   const [content, setContent] = useState<SiteContent>(defaultContent);
   const [isSaving, setIsSaving] = useState(false);
@@ -82,7 +82,12 @@ export default function AdminDashboardClient({ user }: AdminDashboardClientProps
   });
 
   useEffect(() => {
-    loadSiteContent().then(setContent);
+    fetch("/api/admin/site-content")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.content) setContent(data.content);
+      })
+      .catch(console.error);
   }, []);
 
   const handleLogout = async () => {
@@ -91,16 +96,25 @@ export default function AdminDashboardClient({ user }: AdminDashboardClientProps
     router.refresh();
   };
 
+  const saveContent = async (updatedContent: SiteContent) => {
+    const res = await fetch("/api/admin/site-content", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedContent),
+    });
+    return res.json();
+  };
+
   const handleSave = async () => {
     setIsSaving(true);
-    const success = await saveSiteContent(content);
+    const data = await saveContent(content);
     setIsSaving(false);
     toast({
-      title: success ? "Changes Saved" : "Save Failed",
-      description: success
+      title: data.success ? "Changes Saved" : "Save Failed",
+      description: data.success
         ? "Your changes are now live for everyone, on every device."
         : "Something went wrong while saving — please try again.",
-      variant: success ? undefined : "destructive",
+      variant: data.success ? undefined : "destructive",
     });
   };
 
@@ -110,7 +124,7 @@ export default function AdminDashboardClient({ user }: AdminDashboardClientProps
     );
     const updatedContent = { ...content, messages: updatedMessages };
     setContent(updatedContent);
-    await saveSiteContent(updatedContent);
+    await saveContent(updatedContent);
     toast({
       title: "Message Deleted",
       description: "The message has been deleted successfully.",
@@ -123,26 +137,30 @@ export default function AdminDashboardClient({ user }: AdminDashboardClientProps
     );
     const updatedContent = { ...content, messages: updatedMessages };
     setContent(updatedContent);
-    await saveSiteContent(updatedContent);
+    await saveContent(updatedContent);
   };
 
-  const handleToggleJobStatus = (id: string) => {
+  const handleToggleJobStatus = async (id: string) => {
     const updatedJobs = (content.jobs || []).map((job) =>
       job.id === id ? { ...job, isOpen: !job.isOpen } : job,
     );
-    setContent((prev) => ({ ...prev, jobs: updatedJobs }));
+    const updatedContent = { ...content, jobs: updatedJobs };
+    setContent(updatedContent);
+    await saveContent(updatedContent);
   };
 
-  const handleDeleteJob = (id: string) => {
+  const handleDeleteJob = async (id: string) => {
     const updatedJobs = (content.jobs || []).filter((job) => job.id !== id);
-    setContent((prev) => ({ ...prev, jobs: updatedJobs }));
+    const updatedContent = { ...content, jobs: updatedJobs };
+    setContent(updatedContent);
+    await saveContent(updatedContent);
     toast({
       title: "Job Listing Removed",
       description: "The role has been permanently scrubbed.",
     });
   };
 
-  const handleCreateJob = (e: React.FormEvent) => {
+  const handleCreateJob = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newJob.title || !newJob.department) {
       toast({
@@ -169,10 +187,12 @@ export default function AdminDashboardClient({ user }: AdminDashboardClientProps
       isOpen: true,
     };
 
-    setContent((prev) => ({
-      ...prev,
-      jobs: [...(prev.jobs || []), createdListing],
-    }));
+    const updatedContent = {
+      ...content,
+      jobs: [...(content.jobs || []), createdListing],
+    };
+    setContent(updatedContent);
+    await saveContent(updatedContent);
 
     setNewJob({
       title: "",
@@ -186,33 +206,37 @@ export default function AdminDashboardClient({ user }: AdminDashboardClientProps
 
     toast({
       title: "Job Created!",
-      description: "Position added — click Commit Global Save to publish it live.",
+      description: "Position added and saved.",
     });
   };
 
-  const handleUpdateApplicationStatus = (
+  const handleUpdateApplicationStatus = async (
     id: string,
     status: "Pending" | "Reviewed" | "Rejected",
   ) => {
     const updatedApps = (content.applications || []).map((app) =>
       app.id === id ? { ...app, status } : app,
     );
-    boxLayoutSync(updatedApps);
+    await boxLayoutSync(updatedApps);
   };
 
-  const boxLayoutSync = (updatedApps: JobApplication[]) => {
-    setContent((prev) => ({ ...prev, applications: updatedApps }));
+  const boxLayoutSync = async (updatedApps: JobApplication[]) => {
+    const updatedContent = { ...content, applications: updatedApps };
+    setContent(updatedContent);
+    await saveContent(updatedContent);
     toast({
       title: "Status Synchronized",
       description: `Applicant classification status safely tracked.`,
     });
   };
 
-  const handleDeleteApplication = (id: string) => {
+  const handleDeleteApplication = async (id: string) => {
     const updatedApps = (content.applications || []).filter(
       (app) => app.id !== id,
     );
-    setContent((prev) => ({ ...prev, applications: updatedApps }));
+    const updatedContent = { ...content, applications: updatedApps };
+    setContent(updatedContent);
+    await saveContent(updatedContent);
     toast({
       title: "Profile Dismissed",
       description: "Application submission records have been cleared.",
