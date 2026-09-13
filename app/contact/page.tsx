@@ -201,7 +201,7 @@ export default function ContactPage() {
                   <Textarea
                     name="message"
                     placeholder="Tell us more about how we can help..."
-                    className="min-h-[150px]"
+                    className="min-h-37.5"
                     value={formData.message}
                     onChange={handleChange}
                     disabled={isSubmitting}

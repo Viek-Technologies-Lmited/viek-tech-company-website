@@ -58,13 +58,15 @@ interface AdminDashboardClientProps {
     name?: string | null;
     role: string;
   };
+  initialContent: SiteContent;
 }
 
 export default function AdminDashboardClient({
   user,
+  initialContent,
 }: AdminDashboardClientProps) {
   const router = useRouter();
-  const [content, setContent] = useState<SiteContent>(defaultContent);
+  const [content, setContent] = useState<SiteContent>(initialContent);
   const [isSaving, setIsSaving] = useState(false);
   const [expandedMessage, setExpandedMessage] = useState<string | null>(null);
   const [expandedApplication, setExpandedApplication] = useState<string | null>(
@@ -80,15 +82,6 @@ export default function AdminDashboardClient({
     requirements: "",
     responsibilities: "",
   });
-
-  useEffect(() => {
-    fetch("/api/admin/site-content")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.content) setContent(data.content);
-      })
-      .catch(console.error);
-  }, []);
 
   const handleLogout = async () => {
     await fetch("/api/auth/signout", { method: "POST" });
