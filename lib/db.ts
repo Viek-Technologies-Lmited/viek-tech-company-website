@@ -154,6 +154,67 @@ export async function linkMoodleUser(
   return rows.length ? rows[0] : null;
 }
 
+export interface EnrollmentDashboardData {
+  total: number;
+  paid: number;
+  moodleEnrolled: number;
+  pending: number;
+  failed: number;
+  revenueCents: number;
+  courses: Array<{ courseSlug: string; count: number }>;
+  recent: Enrollment[];
+}
+
+export async function getEnrollmentDashboardData(): Promise<EnrollmentDashboardData> {
+  await ensureSchema();
+  const sql = getSql();
+  const [summaryRows, courseRows, recentRows] = await Promise.all([
+    sql`
+      SELECT
+        COUNT(*)::int AS total,
+        COUNT(*) FILTER (WHERE status = 'paid')::int AS paid,
+        COUNT(*) FILTER (WHERE status = 'moodle_enrolled')::int AS moodle_enrolled,
+        COUNT(*) FILTER (WHERE status = 'pending')::int AS pending,
+        COUNT(*) FILTER (WHERE status = 'failed')::int AS failed,
+        COALESCE(SUM(amount_cents) FILTER (WHERE status IN ('paid', 'moodle_enrolled')), 0)::bigint AS revenue_cents
+      FROM enrollments
+    `,
+    sql`
+      SELECT course_slug, COUNT(*)::int AS count
+      FROM enrollments
+      GROUP BY course_slug
+      ORDER BY count DESC
+    `,
+    sql`
+      SELECT * FROM enrollments
+      ORDER BY created_at DESC
+      LIMIT 8
+    `,
+  ]);
+
+  const summary = (summaryRows as unknown as Array<{
+    total: number;
+    paid: number;
+    moodle_enrolled: number;
+    pending: number;
+    failed: number;
+    revenue_cents: number | string;
+  }>)[0];
+
+  return {
+    total: Number(summary?.total || 0),
+    paid: Number(summary?.paid || 0),
+    moodleEnrolled: Number(summary?.moodle_enrolled || 0),
+    pending: Number(summary?.pending || 0),
+    failed: Number(summary?.failed || 0),
+    revenueCents: Number(summary?.revenue_cents || 0),
+    courses: (courseRows as unknown as Array<{ course_slug: string; count: number }>).map(
+      (course) => ({ courseSlug: course.course_slug, count: Number(course.count) }),
+    ),
+    recent: recentRows as unknown as Enrollment[],
+  };
+}
+
 export interface SiteContentData {
   hero: {
     badge: string;
@@ -238,20 +299,30 @@ export interface SiteContentData {
   }>;
 }
 
+let siteContentSchemaReady = false;
+let siteContentSchemaPromise: Promise<void> | null = null;
+
 async function ensureSiteContentSchema(): Promise<void> {
-  const sql = getSql();
-  await sql`
-    CREATE TABLE IF NOT EXISTS site_content (
-      id          TEXT PRIMARY KEY DEFAULT 'main',
-      data        JSONB NOT NULL DEFAULT '{}'::jsonb,
-      updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
-    );
-  `;
-  await sql`
-    INSERT INTO site_content (id, data)
-    VALUES ('main', '{}'::jsonb)
-    ON CONFLICT (id) DO NOTHING;
-  `;
+  if (siteContentSchemaReady) return;
+  if (!siteContentSchemaPromise) {
+    siteContentSchemaPromise = (async () => {
+      const sql = getSql();
+      await sql`
+        CREATE TABLE IF NOT EXISTS site_content (
+          id          TEXT PRIMARY KEY DEFAULT 'main',
+          data        JSONB NOT NULL DEFAULT '{}'::jsonb,
+          updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+        );
+      `;
+      await sql`
+        INSERT INTO site_content (id, data)
+        VALUES ('main', '{}'::jsonb)
+        ON CONFLICT (id) DO NOTHING;
+      `;
+      siteContentSchemaReady = true;
+    })();
+  }
+  await siteContentSchemaPromise;
 }
 
 export async function getSiteContent(): Promise<SiteContentData | null> {
@@ -284,22 +355,32 @@ export interface User {
   updated_at: Date;
 }
 
+let userSchemaReady = false;
+let userSchemaPromise: Promise<void> | null = null;
+
 async function ensureUserSchema(): Promise<void> {
-  const sql = getSql();
-  await sql`
-    CREATE TABLE IF NOT EXISTS users (
-      id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      email         VARCHAR(254) NOT NULL UNIQUE,
-      name          VARCHAR(254),
-      password_hash VARCHAR(255) NOT NULL,
-      role          VARCHAR(20) NOT NULL DEFAULT 'user',
-      created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
-      updated_at    TIMESTAMPTZ NOT NULL DEFAULT now()
-    );
-  `;
-  await sql`
-    CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
-  `;
+  if (userSchemaReady) return;
+  if (!userSchemaPromise) {
+    userSchemaPromise = (async () => {
+      const sql = getSql();
+      await sql`
+        CREATE TABLE IF NOT EXISTS users (
+          id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+          email         VARCHAR(254) NOT NULL UNIQUE,
+          name          VARCHAR(254),
+          password_hash VARCHAR(255) NOT NULL,
+          role          VARCHAR(20) NOT NULL DEFAULT 'user',
+          created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+          updated_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+        );
+      `;
+      await sql`
+        CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+      `;
+      userSchemaReady = true;
+    })();
+  }
+  await userSchemaPromise;
 }
 
 export async function createUser(params: {

@@ -247,7 +247,7 @@ export function ContactSection({ content }: ContactSectionProps) {
             <div className="space-y-6">
               <Card className="border-border hover:border-primary/30 transition-colors">
                 <CardContent className="p-6 flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <Mail className="w-6 h-6 text-primary" />
                   </div>
                   <div>
@@ -266,7 +266,7 @@ export function ContactSection({ content }: ContactSectionProps) {
 
               <Card className="border-border hover:border-primary/30 transition-colors">
                 <CardContent className="p-6 flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <Phone className="w-6 h-6 text-primary" />
                   </div>
                   <div>
@@ -285,7 +285,7 @@ export function ContactSection({ content }: ContactSectionProps) {
 
               <Card className="border-border hover:border-primary/30 transition-colors">
                 <CardContent className="p-6 flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <MapPin className="w-6 h-6 text-primary" />
                   </div>
                   <div>
@@ -304,7 +304,7 @@ export function ContactSection({ content }: ContactSectionProps) {
 
               <Card className="border-border hover:border-primary/30 transition-colors">
                 <CardContent className="p-6 flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <Clock className="w-6 h-6 text-primary" />
                   </div>
                   <div>
@@ -313,9 +313,6 @@ export function ContactSection({ content }: ContactSectionProps) {
                     </h3>
                     <p className="text-muted-foreground">
                       Monday - Friday: 9:00 AM - 5:00 PM
-                    </p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Saturday: 10:00 AM - 2:00 PM
                     </p>
                   </div>
                 </CardContent>

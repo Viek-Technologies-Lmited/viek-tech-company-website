@@ -1,4 +1,8 @@
-import { getSiteContent, saveSiteContent as dbSaveSiteContent, type SiteContentData } from "./db";
+import {
+  getSiteContent,
+  saveSiteContent as dbSaveSiteContent,
+  type SiteContentData,
+} from "./db";
 
 export interface ContactMessage {
   id: string;
@@ -250,49 +254,7 @@ export const defaultContent: SiteContent = {
     address: "Lagos, Nigeria",
   },
   messages: [],
-  jobs: [
-    {
-      id: "job-1",
-      title: "Frontend Developer (React/Next.js)",
-      department: "Engineering",
-      location: "Lagos, Nigeria",
-      type: "Full-time",
-      description:
-        "We are looking for a skilled Frontend Developer to build clean, maintainable, and user-friendly web applications using Next.js and Tailwind CSS.",
-      requirements: [
-        "2+ years of professional experience with React and Next.js.",
-        "Proficiency in TypeScript and Tailwind CSS.",
-        "Experience matching custom design layouts accurately from Figma files.",
-        "Understanding of frontend optimization techniques and state management.",
-      ],
-      responsibilities: [
-        "Develop scalable, interactive web platforms and UI interfaces.",
-        "Collaborate with backend developers to integrate APIs seamlessly.",
-        "Optimize performance across a wide array of browsers and devices.",
-      ],
-      isOpen: true,
-    },
-    {
-      id: "job-2",
-      title: "UI/UX Designer",
-      department: "Design",
-      location: "Remote",
-      type: "Remote",
-      description:
-        "Join our core creative team to design intuitive workflows, structural mockups, and visual components for complex web and mobile ecosystems.",
-      requirements: [
-        "Strong portfolio demonstrating beautiful user centered interfaces.",
-        "Advanced proficiency with Figma and design systems.",
-        "Ability to translate system requirements into high-fidelity wireframes.",
-      ],
-      responsibilities: [
-        "Create visually stunning mockups, wireframes, and design components.",
-        "Iterate designs based on feedback from engineering and active clients.",
-        "Maintain absolute design system integrity across applications.",
-      ],
-      isOpen: true,
-    },
-  ],
+  jobs: [],
   applications: [],
 };
 

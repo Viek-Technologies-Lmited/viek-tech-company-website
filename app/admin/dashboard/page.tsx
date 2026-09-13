@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { getSiteContent } from "@/lib/db";
+import { getEnrollmentDashboardData, getSiteContent } from "@/lib/db";
 import { defaultContent } from "@/lib/site-content";
 import AdminDashboardClient from "./admin-dashboard-client";
 
@@ -11,8 +11,15 @@ export default async function AdminDashboardPage() {
   }
 
   const dbContent = await getSiteContent();
+  const enrollmentData = await getEnrollmentDashboardData();
   // Handle case where DB row exists but data is empty object {}
   const content = dbContent && Object.keys(dbContent).length > 0 ? dbContent : defaultContent;
 
-  return <AdminDashboardClient user={session.user} initialContent={content} />;
+  return (
+    <AdminDashboardClient
+      user={session.user}
+      initialContent={content}
+      enrollmentData={enrollmentData}
+    />
+  );
 }

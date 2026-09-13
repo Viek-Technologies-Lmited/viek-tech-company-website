@@ -31,8 +31,6 @@ import {
 } from "lucide-react";
 import {
   defaultContent,
-  loadSiteContent,
-  saveSiteContent,
   type SiteContent,
   type JobListing,
   type JobApplication,
@@ -57,7 +55,15 @@ export default function CareersPage() {
   const [resumeName, setResumeName] = useState<string>("");
 
   useEffect(() => {
-    loadSiteContent().then(setContent);
+    fetch("/api/careers/content")
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to load careers content");
+        return response.json();
+      })
+      .then(({ content }: { content: SiteContent }) => setContent(content))
+      .catch((error) => {
+        console.error("Error loading careers content:", error);
+      });
   }, []);
 
   const handleInputChange = (
@@ -112,7 +118,27 @@ export default function CareersPage() {
     ];
     const updatedContent = { ...content, applications: updatedApplications };
     setContent(updatedContent);
-    await saveSiteContent(updatedContent);
+
+    try {
+      const contentResponse = await fetch("/api/careers/content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newApplication),
+      });
+
+      if (!contentResponse.ok) {
+        throw new Error("Failed to save application");
+      }
+    } catch (contentError) {
+      console.error("Error saving application:", contentError);
+      setIsSubmitting(false);
+      toast({
+        title: "Application failed",
+        description: "We could not save your application. Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     try {
       const fd = new FormData();
@@ -167,7 +193,7 @@ export default function CareersPage() {
       <Navbar />
       <Toaster />
 
-      <div className="flex-grow pt-24 pb-20">
+      <div className="grow pt-24 pb-20">
         <div className="container mx-auto px-6 max-w-5xl">
           <AnimatePresence mode="wait">
             {!selectedJob ? (
@@ -400,7 +426,7 @@ export default function CareersPage() {
                           <h3 className="mt-4 text-sm font-bold text-slate-900">
                             {step.title}
                           </h3>
-                          <p className="mt-1 max-w-[12rem] text-xs text-slate-500">
+                          <p className="mt-1 max-w-48 text-xs text-slate-500">
                             {step.body}
                           </p>
                         </li>
@@ -531,7 +557,7 @@ export default function CareersPage() {
 
       {/* ── Apply Dialog — unchanged logic, restyled ── */}
       <Dialog open={isApplyOpen} onOpenChange={setIsApplyOpen}>
-        <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-137.5 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-slate-900">
               Apply for {selectedJob?.title}
@@ -664,7 +690,7 @@ export default function CareersPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="rounded-md bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60 min-w-[120px]"
+                className="rounded-md bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60 min-w-30"
               >
                 {isSubmitting ? "Submitting..." : "Submit Profile"}
               </button>

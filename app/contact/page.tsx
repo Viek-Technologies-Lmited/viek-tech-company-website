@@ -10,11 +10,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Check, AlertCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-import {
-  defaultContent,
-  type SiteContent,
-  type ContactMessage,
-} from "@/lib/site-content";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -56,35 +51,17 @@ export default function ContactPage() {
       return;
     }
 
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 800));
-
     try {
-      // Get existing content from localStorage
-      const savedContent = localStorage.getItem("viek-site-content");
-      let content: SiteContent = savedContent
-        ? JSON.parse(savedContent)
-        : defaultContent;
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-      // Create new message
-      const newMessage: ContactMessage = {
-        id: Date.now().toString(),
-        name: formData.name,
-        email: formData.email,
-        subject: formData.subject,
-        message: formData.message,
-        timestamp: Date.now(),
-        read: false,
-      };
-
-      // Add message to content
-      if (!content.messages) {
-        content.messages = [];
+      if (!response.ok) {
+        const result = await response.json().catch(() => null);
+        throw new Error(result?.error || "Failed to send message");
       }
-      content.messages.push(newMessage);
-
-      // Save updated content to localStorage
-      localStorage.setItem("viek-site-content", JSON.stringify(content));
 
       // Success feedback
       setSubmitSuccess(true);
@@ -105,7 +82,7 @@ export default function ContactPage() {
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 3000);
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "Failed to send message. Please try again.",
