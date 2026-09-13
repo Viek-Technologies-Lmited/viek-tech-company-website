@@ -13,7 +13,8 @@ export default async function AdminDashboardPage() {
   const dbContent = await getSiteContent();
   const enrollmentData = await getEnrollmentDashboardData();
   // Handle case where DB row exists but data is empty object {}
-  const content = dbContent && Object.keys(dbContent).length > 0 ? dbContent : defaultContent;
+  const content =
+    dbContent && Object.keys(dbContent).length > 0 ? dbContent : defaultContent;
 
   return (
     <AdminDashboardClient

@@ -8,8 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Phone, MapPin, Send, Clock, CheckCircle } from "lucide-react";
-import type { SiteContent, ContactMessage } from "@/lib/site-content";
-import { defaultContent } from "@/lib/site-content";
+import type { SiteContent } from "@/lib/site-content";
 import { toast } from "@/hooks/use-toast";
 
 interface ContactSectionProps {
@@ -40,34 +39,16 @@ export function ContactSection({ content }: ContactSectionProps) {
     setIsLoading(true);
 
     try {
-      // Simulate network delay to match Contact Page feel
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-      // Get existing content from localStorage
-      const savedContent = localStorage.getItem("viek-site-content");
-      let siteContent: SiteContent = savedContent
-        ? JSON.parse(savedContent)
-        : defaultContent;
-
-      // Create new message object exactly like the Contact Page
-      const newMessage: ContactMessage = {
-        id: Date.now().toString(),
-        name: formData.name,
-        email: formData.email,
-        subject: formData.subject,
-        message: formData.message,
-        timestamp: Date.now(),
-        read: false,
-      };
-
-      // Add message to content array
-      if (!siteContent.messages) {
-        siteContent.messages = [];
+      if (!response.ok) {
+        const result = await response.json().catch(() => null);
+        throw new Error(result?.error || "Failed to send message");
       }
-      siteContent.messages.push(newMessage);
-
-      // Save to localStorage so Admin Dashboard can see it
-      localStorage.setItem("viek-site-content", JSON.stringify(siteContent));
 
       setIsSubmitted(true);
 
@@ -76,7 +57,7 @@ export function ContactSection({ content }: ContactSectionProps) {
         title: "Message Sent!",
         description: "Your inquiry has been logged in the dashboard.",
       });
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
