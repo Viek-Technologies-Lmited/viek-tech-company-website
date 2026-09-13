@@ -105,8 +105,8 @@ export const defaultContent: SiteContent = {
     secondaryCta: "Our Services",
   },
   stats: {
-    projects: "200+",
-    students: "1,500+",
+    projects: "20+",
+    students: "1,000+",
     clients: "150+",
     successRate: "98%",
   },

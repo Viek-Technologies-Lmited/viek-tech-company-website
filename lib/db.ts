@@ -192,14 +192,16 @@ export async function getEnrollmentDashboardData(): Promise<EnrollmentDashboardD
     `,
   ]);
 
-  const summary = (summaryRows as unknown as Array<{
-    total: number;
-    paid: number;
-    moodle_enrolled: number;
-    pending: number;
-    failed: number;
-    revenue_cents: number | string;
-  }>)[0];
+  const summary = (
+    summaryRows as unknown as Array<{
+      total: number;
+      paid: number;
+      moodle_enrolled: number;
+      pending: number;
+      failed: number;
+      revenue_cents: number | string;
+    }>
+  )[0];
 
   return {
     total: Number(summary?.total || 0),
@@ -208,9 +210,12 @@ export async function getEnrollmentDashboardData(): Promise<EnrollmentDashboardD
     pending: Number(summary?.pending || 0),
     failed: Number(summary?.failed || 0),
     revenueCents: Number(summary?.revenue_cents || 0),
-    courses: (courseRows as unknown as Array<{ course_slug: string; count: number }>).map(
-      (course) => ({ courseSlug: course.course_slug, count: Number(course.count) }),
-    ),
+    courses: (
+      courseRows as unknown as Array<{ course_slug: string; count: number }>
+    ).map((course) => ({
+      courseSlug: course.course_slug,
+      count: Number(course.count),
+    })),
     recent: recentRows as unknown as Enrollment[],
   };
 }

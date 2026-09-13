@@ -154,7 +154,7 @@ const values = [
 ];
 
 const stats = [
-  { number: "5+", label: "Students Trained", icon: GraduationCap },
+  // { number: "50+", label: "Students Trained", icon: GraduationCap },
   { number: "20+", label: "Projects Delivered", icon: Briefcase },
   { number: "50+", label: "Enterprise Clients", icon: Building },
   { number: "98%", label: "Job Placement Rate", icon: Star },
@@ -220,7 +220,7 @@ export default function AboutPage() {
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-8"
+            className="grid grid-cols-2 md:grid-cols-3 gap-8"
           >
             {stats.map((stat, index) => (
               <motion.div

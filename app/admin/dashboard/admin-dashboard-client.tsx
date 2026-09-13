@@ -425,7 +425,9 @@ export default function AdminDashboardClient({
                   </div>
                   <div>
                     <p className="text-2xl font-bold">{enrollmentData.total}</p>
-                    <p className="text-xs text-muted-foreground">LMS Enrollments</p>
+                    <p className="text-xs text-muted-foreground">
+                      LMS Enrollments
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -674,20 +676,46 @@ export default function AdminDashboardClient({
                 <TabsContent value="lms" className="space-y-6 outline-none">
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     {[
-                      { label: "Paid", value: enrollmentData.paid, icon: DollarSign, tone: "text-emerald-600 bg-emerald-100" },
-                      { label: "Moodle Enrolled", value: enrollmentData.moodleEnrolled, icon: CheckCircle2, tone: "text-blue-600 bg-blue-100" },
-                      { label: "Pending Payment", value: enrollmentData.pending, icon: Clock, tone: "text-amber-600 bg-amber-100" },
-                      { label: "Failed", value: enrollmentData.failed, icon: AlertTriangle, tone: "text-red-600 bg-red-100" },
+                      {
+                        label: "Paid",
+                        value: enrollmentData.paid,
+                        icon: DollarSign,
+                        tone: "text-emerald-600 bg-emerald-100",
+                      },
+                      {
+                        label: "Moodle Enrolled",
+                        value: enrollmentData.moodleEnrolled,
+                        icon: CheckCircle2,
+                        tone: "text-blue-600 bg-blue-100",
+                      },
+                      {
+                        label: "Pending Payment",
+                        value: enrollmentData.pending,
+                        icon: Clock,
+                        tone: "text-amber-600 bg-amber-100",
+                      },
+                      {
+                        label: "Failed",
+                        value: enrollmentData.failed,
+                        icon: AlertTriangle,
+                        tone: "text-red-600 bg-red-100",
+                      },
                     ].map((metric) => (
                       <Card key={metric.label}>
                         <CardContent className="p-4">
                           <div className="flex items-center gap-3">
-                            <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${metric.tone}`}>
+                            <div
+                              className={`w-9 h-9 rounded-lg flex items-center justify-center ${metric.tone}`}
+                            >
                               <metric.icon className="w-4 h-4" />
                             </div>
                             <div>
-                              <p className="text-xl font-bold">{metric.value}</p>
-                              <p className="text-xs text-muted-foreground">{metric.label}</p>
+                              <p className="text-xl font-bold">
+                                {metric.value}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {metric.label}
+                              </p>
                             </div>
                           </div>
                         </CardContent>
@@ -699,38 +727,61 @@ export default function AdminDashboardClient({
                     <Card>
                       <CardHeader>
                         <CardTitle className="text-base">LMS Revenue</CardTitle>
-                        <CardDescription>Successful Paystack enrollments</CardDescription>
+                        <CardDescription>
+                          Successful Paystack enrollments
+                        </CardDescription>
                       </CardHeader>
                       <CardContent>
                         <p className="text-3xl font-bold text-foreground">
                           {formatNaira(enrollmentData.revenueCents)}
                         </p>
                         <p className="text-sm text-muted-foreground mt-2">
-                          {enrollmentData.moodleEnrolled} learner{enrollmentData.moodleEnrolled === 1 ? "" : "s"} connected to Moodle
+                          {enrollmentData.moodleEnrolled} learner
+                          {enrollmentData.moodleEnrolled === 1 ? "" : "s"}{" "}
+                          connected to Moodle
                         </p>
                       </CardContent>
                     </Card>
 
                     <Card>
                       <CardHeader>
-                        <CardTitle className="text-base">Course Demand</CardTitle>
-                        <CardDescription>Enrollment volume by course</CardDescription>
+                        <CardTitle className="text-base">
+                          Course Demand
+                        </CardTitle>
+                        <CardDescription>
+                          Enrollment volume by course
+                        </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-3">
-                        {enrollmentData.courses.length > 0 ? enrollmentData.courses.slice(0, 5).map((course) => (
-                          <div key={course.courseSlug} className="flex items-center justify-between gap-4 text-sm">
-                            <span className="truncate font-medium">{course.courseSlug.replace(/-/g, " ")}</span>
-                            <Badge variant="secondary">{course.count}</Badge>
-                          </div>
-                        )) : <p className="text-sm text-muted-foreground">No enrollments yet.</p>}
+                        {enrollmentData.courses.length > 0 ? (
+                          enrollmentData.courses.slice(0, 5).map((course) => (
+                            <div
+                              key={course.courseSlug}
+                              className="flex items-center justify-between gap-4 text-sm"
+                            >
+                              <span className="truncate font-medium">
+                                {course.courseSlug.replace(/-/g, " ")}
+                              </span>
+                              <Badge variant="secondary">{course.count}</Badge>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-sm text-muted-foreground">
+                            No enrollments yet.
+                          </p>
+                        )}
                       </CardContent>
                     </Card>
                   </div>
 
                   <Card>
                     <CardHeader>
-                      <CardTitle className="text-base">Recent Learners</CardTitle>
-                      <CardDescription>Latest checkout and Moodle provisioning activity</CardDescription>
+                      <CardTitle className="text-base">
+                        Recent Learners
+                      </CardTitle>
+                      <CardDescription>
+                        Latest checkout and Moodle provisioning activity
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       {enrollmentData.recent.length > 0 ? (
@@ -741,29 +792,54 @@ export default function AdminDashboardClient({
                                 <th className="pb-3 font-medium">Learner</th>
                                 <th className="pb-3 font-medium">Course</th>
                                 <th className="pb-3 font-medium">Status</th>
-                                <th className="pb-3 text-right font-medium">Amount</th>
+                                <th className="pb-3 text-right font-medium">
+                                  Amount
+                                </th>
                               </tr>
                             </thead>
                             <tbody>
                               {enrollmentData.recent.map((enrollment) => (
-                                <tr key={enrollment.id} className="border-b last:border-0">
+                                <tr
+                                  key={enrollment.id}
+                                  className="border-b last:border-0"
+                                >
                                   <td className="py-3">
-                                    <p className="font-medium">{enrollment.fullname}</p>
-                                    <p className="text-xs text-muted-foreground">{enrollment.email}</p>
+                                    <p className="font-medium">
+                                      {enrollment.fullname}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">
+                                      {enrollment.email}
+                                    </p>
                                   </td>
-                                  <td className="py-3 capitalize">{enrollment.course_slug.replace(/-/g, " ")}</td>
+                                  <td className="py-3 capitalize">
+                                    {enrollment.course_slug.replace(/-/g, " ")}
+                                  </td>
                                   <td className="py-3">
-                                    <Badge variant={enrollment.status === "failed" ? "destructive" : "secondary"}>
+                                    <Badge
+                                      variant={
+                                        enrollment.status === "failed"
+                                          ? "destructive"
+                                          : "secondary"
+                                      }
+                                    >
                                       {enrollment.status.replace(/_/g, " ")}
                                     </Badge>
                                   </td>
-                                  <td className="py-3 text-right font-medium">{formatNaira(Number(enrollment.amount_cents))}</td>
+                                  <td className="py-3 text-right font-medium">
+                                    {formatNaira(
+                                      Number(enrollment.amount_cents),
+                                    )}
+                                  </td>
                                 </tr>
                               ))}
                             </tbody>
                           </table>
                         </div>
-                      ) : <p className="text-sm text-muted-foreground">No learner activity yet.</p>}
+                      ) : (
+                        <p className="text-sm text-muted-foreground">
+                          No learner activity yet.
+                        </p>
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>

@@ -102,7 +102,7 @@ export function HeroSection({ content }: HeroSectionProps) {
                   ))}
                 </div>
                 <span className="text-sm text-muted-foreground">
-                  4.9/5 from 500+ reviews
+                  4.9/5 from 50+ reviews
                 </span>
               </div>
             </div>

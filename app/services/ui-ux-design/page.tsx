@@ -127,7 +127,7 @@ export default function UIUXDesignPage() {
               animate={{ opacity: 1, scale: 1 }}
               className="relative"
             >
-              <div className="relative rounded-[2rem] overflow-hidden shadow-2xl">
+              <div className="relative rounded-4xl overflow-hidden shadow-2xl">
                 <Image
                   src="https://s3-figma-hubfile-images-production.figma.com/hub/file/carousel/img/23fb21eaf38b9641b049695ed627f8cbfe9c8ed9"
                   alt="UI UX Design Process"
