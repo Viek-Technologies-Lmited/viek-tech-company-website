@@ -43,7 +43,11 @@ export function CheckoutModal({
 
   const pricing = coursePricing[courseSlug];
   const amountMajor =
-    currency === "NGN" ? pricing?.standardFeeNgn : pricing?.standardFeeUsd;
+    currency === "NGN"
+      ? (pricing?.discountedFeeNgn ?? pricing?.standardFeeNgn)
+      : (pricing?.discountedFeeUsd ?? pricing?.standardFeeUsd);
+  const tuitionMajor =
+    currency === "NGN" ? pricing?.tuitionFeeNgn : pricing?.tuitionFeeUsd;
   const currencySymbol = currency === "NGN" ? "₦" : "$";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -98,6 +102,31 @@ export function CheckoutModal({
             </DialogDescription>
           </DialogHeader>
 
+          {pricing && (
+            <div className="my-4 rounded-xl border border-border/60 bg-muted/40 p-3.5 flex items-center justify-between">
+              <div>
+                <span className="text-xs text-muted-foreground block">Tuition Price</span>
+                <span className="text-sm text-muted-foreground line-through font-medium">
+                  {currencySymbol}
+                  {tuitionMajor?.toLocaleString(
+                    currency === "NGN" ? "en-NG" : "en-US",
+                  )}
+                </span>
+              </div>
+              <div className="text-right">
+                <span className="text-xs font-semibold text-primary block">
+                  Discounted Price
+                </span>
+                <span className="text-lg font-bold text-foreground">
+                  {currencySymbol}
+                  {amountMajor?.toLocaleString(
+                    currency === "NGN" ? "en-NG" : "en-US",
+                  )}
+                </span>
+              </div>
+            </div>
+          )}
+
           <div className="my-4 flex gap-2" role="radiogroup">
             <button
               type="button"
@@ -109,7 +138,7 @@ export function CheckoutModal({
               }}`}
             >
               <Globe className="h-4 w-4" />
-              NGN (₦{amountMajor?.toLocaleString("en-NG")})
+              NGN (₦{(pricing?.discountedFeeNgn ?? pricing?.standardFeeNgn)?.toLocaleString("en-NG")})
             </button>
             <button
               type="button"
@@ -121,7 +150,7 @@ export function CheckoutModal({
               }}`}
             >
               <Globe className="h-4 w-4" />
-              USD (${amountMajor?.toLocaleString("en-US")})
+              USD (${(pricing?.discountedFeeUsd ?? pricing?.standardFeeUsd)?.toLocaleString("en-US")})
             </button>
           </div>
 

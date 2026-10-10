@@ -128,10 +128,17 @@ export default function CoursePage() {
                 <div className="bg-white border border-gray-100 shadow-sm rounded-2xl px-5 py-4 flex items-center gap-3">
                   <Award className="h-5 w-5 text-blue-600" />
                   <div>
-                    <p className="font-bold text-gray-900">
-                      {formatPrice(course.standardFee)}
-                    </p>
-                    <p className="text-sm text-gray-500">Standard Price</p>
+                    <div className="flex items-baseline gap-2">
+                      <p className="font-bold text-gray-900 text-lg">
+                        {formatPrice(course.discountedFee ?? course.standardFee)}
+                      </p>
+                      {course.tuitionFee && (
+                        <span className="text-xs text-gray-400 line-through">
+                          {formatPrice(course.tuitionFee)}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-500">Tuition Price</p>
                   </div>
                 </div>
               </div>
@@ -139,10 +146,17 @@ export default function CoursePage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
                   size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-7 rounded-2xl text-lg shadow-xl"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-7 rounded-2xl text-lg shadow-xl flex items-center gap-3"
                   onClick={() => setCheckoutOpen(true)}
                 >
-                  Enroll Now - {formatPrice(course.standardFee)}
+                  <span>
+                    Enroll Now - {formatPrice(course.discountedFee ?? course.standardFee)}
+                  </span>
+                  {course.tuitionFee && (
+                    <span className="text-sm text-blue-200 line-through">
+                      {formatPrice(course.tuitionFee)}
+                    </span>
+                  )}
                 </Button>
               </div>
             </motion.div>
@@ -261,11 +275,18 @@ export default function CoursePage() {
                         {course.rating} ({course.reviews})
                       </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Standard Fee</span>
-                      <span className="text-gray-900 font-medium">
-                        {formatPrice(course.standardFee)}
-                      </span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-500">Tuition Price</span>
+                      <div className="text-right">
+                        {course.tuitionFee && (
+                          <span className="text-xs text-gray-400 line-through mr-2">
+                            {formatPrice(course.tuitionFee)}
+                          </span>
+                        )}
+                        <span className="text-gray-900 font-bold">
+                          {formatPrice(course.discountedFee ?? course.standardFee)}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
@@ -276,7 +297,7 @@ export default function CoursePage() {
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-7 rounded-2xl text-lg font-semibold shadow-xl"
                 onClick={() => setCheckoutOpen(true)}
               >
-                Enroll Now
+                Enroll Now - {formatPrice(course.discountedFee ?? course.standardFee)}
               </Button>
               <CheckoutModal
                 courseSlug={course.slug}

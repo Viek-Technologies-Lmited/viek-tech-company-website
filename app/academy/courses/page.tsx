@@ -304,10 +304,15 @@ export default function AllCoursesPage() {
 
                   {/* Pricing & CTA */}
                   <div className="flex items-center justify-between">
-                    <div>
+                    <div className="flex items-baseline gap-2">
                       <span className="text-2xl font-bold text-foreground">
-                        ₦{course.standardFee.toLocaleString()}
+                        ₦{(course.discountedFee ?? course.standardFee).toLocaleString()}
                       </span>
+                      {course.tuitionFee && (
+                        <span className="text-sm text-muted-foreground line-through">
+                          ₦{course.tuitionFee.toLocaleString()}
+                        </span>
+                      )}
                     </div>
                     <Button
                       asChild

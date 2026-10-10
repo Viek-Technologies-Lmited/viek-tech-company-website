@@ -99,10 +99,15 @@ export default function LearningPathsSlider({
                     <h5 className="text-sm font-medium">{course.rating}</h5>
                     <h5 className="text-sm font-medium">({course.reviews})</h5>
                   </div>
-                  <div className="flex items-center gap-x-2 mt-4">
-                    <h5 className="text-sm font-medium">
-                      ₦{course.standardFee.toLocaleString()}
-                    </h5>
+                  <div className="flex items-baseline gap-x-2 mt-4">
+                    <span className="text-base font-bold text-gray-900">
+                      ₦{(course.discountedFee ?? course.standardFee).toLocaleString()}
+                    </span>
+                    {course.tuitionFee && (
+                      <span className="text-xs text-gray-400 line-through">
+                        ₦{course.tuitionFee.toLocaleString()}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>

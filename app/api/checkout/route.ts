@@ -34,8 +34,8 @@ export async function POST(req: NextRequest) {
 
     const amountMajor =
       currency === "NGN"
-        ? pricing.standardFeeNgn
-        : pricing.standardFeeUsd;
+        ? (pricing.discountedFeeNgn ?? pricing.standardFeeNgn)
+        : (pricing.discountedFeeUsd ?? pricing.standardFeeUsd);
     if (!amountMajor || amountMajor <= 0) {
       return NextResponse.json(
         { error: `No price configured for ${courseSlug} in ${currency}` },
