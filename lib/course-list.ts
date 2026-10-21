@@ -19,7 +19,7 @@ export type CourseListType = {
 export const courseList = [
   {
     name: "viek core",
-    duration: "3 Months",
+    duration: "8 Weeks",
     tuitionFee: 100000,
     discountedFee: 50000,
     standardFee: 50000,
@@ -60,7 +60,7 @@ export const courseList = [
   },
   {
     name: "ai & automation",
-    duration: "3 Months",
+    duration: "8 Weeks",
     tuitionFee: 120000,
     discountedFee: 60000,
     standardFee: 60000,
@@ -102,7 +102,7 @@ export const courseList = [
   },
   {
     name: "data analytics",
-    duration: "3-4 Months",
+    duration: "8 Weeks",
     tuitionFee: 150000,
     discountedFee: 75000,
     standardFee: 75000,
@@ -143,7 +143,7 @@ export const courseList = [
   },
   {
     name: "cybersecurity",
-    duration: "3-4 Months",
+    duration: "8 Weeks",
     tuitionFee: 160000,
     discountedFee: 80000,
     standardFee: 80000,
@@ -184,7 +184,7 @@ export const courseList = [
   },
   {
     name: "software development",
-    duration: "4-6 Months",
+    duration: "8 Weeks",
     tuitionFee: 200000,
     discountedFee: 100000,
     standardFee: 100000,
@@ -225,7 +225,7 @@ export const courseList = [
   },
   {
     name: "cloud engineering",
-    duration: "3-4 Months",
+    duration: "8 Weeks",
     tuitionFee: 180000,
     discountedFee: 90000,
     standardFee: 90000,
@@ -266,7 +266,7 @@ export const courseList = [
   },
   {
     name: "product design",
-    duration: "3-4 Months",
+    duration: "8 Weeks",
     tuitionFee: 150000,
     discountedFee: 75000,
     standardFee: 75000,
@@ -307,7 +307,7 @@ export const courseList = [
   },
   {
     name: "digital marketing",
-    duration: "3 Months",
+    duration: "8 Weeks",
     tuitionFee: 120000,
     discountedFee: 60000,
     standardFee: 60000,
@@ -348,7 +348,7 @@ export const courseList = [
   },
   {
     name: "project management",
-    duration: "3 Months",
+    duration: "8 Weeks",
     tuitionFee: 120000,
     discountedFee: 60000,
     standardFee: 60000,
@@ -390,7 +390,7 @@ export const courseList = [
   },
   {
     name: "digital operations",
-    duration: "3 Months",
+    duration: "8 Weeks",
     tuitionFee: 120000,
     discountedFee: 60000,
     standardFee: 60000,
@@ -431,7 +431,7 @@ export const courseList = [
   },
   {
     name: "virtual assistant",
-    duration: "4 Weeks",
+    duration: "6 Weeks",
     tuitionFee: 40000,
     discountedFee: 20000,
     standardFee: 20000,
@@ -472,7 +472,7 @@ export const courseList = [
   },
   {
     name: "graphic design",
-    duration: "3 Months",
+    duration: "8 Weeks",
     tuitionFee: 100000,
     discountedFee: 50000,
     standardFee: 50000,
