@@ -38,7 +38,7 @@ const courses = [
     title: "Mobile App Development",
     description:
       "Learn to build cross-platform mobile applications for iOS and Android.",
-    duration: "10 Weeks",
+    duration: "12 Weeks",
     level: "Intermediate",
     icon: Smartphone,
     topics: ["React Native", "Flutter", "Firebase", "App Store"],
@@ -47,7 +47,7 @@ const courses = [
     title: "Data Science & Analytics",
     description:
       "Dive into data analysis, machine learning, and AI fundamentals.",
-    duration: "8 Weeks",
+    duration: "12 Weeks",
     level: "Intermediate",
     icon: Database,
     topics: ["Python", "SQL", "Machine Learning", "Visualization"],
@@ -55,7 +55,7 @@ const courses = [
   {
     title: "Cybersecurity Essentials",
     description: "Learn to protect systems and networks from cyber threats.",
-    duration: "6 Weeks",
+    duration: "12 Weeks",
     level: "Beginner",
     icon: Shield,
     topics: [

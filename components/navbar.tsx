@@ -42,7 +42,7 @@ const academyCourses = [
     description:
       "Master frontend and backend technologies to build complete web applications.",
     icon: Code,
-    duration: "16 Weeks",
+    duration: "12 Weeks",
     level: "Beginner to Advanced",
   },
   {
@@ -60,7 +60,7 @@ const academyCourses = [
     description:
       "Learn Python, machine learning, and data visualization techniques.",
     icon: Database,
-    duration: "14 Weeks",
+    duration: "12 Weeks",
     level: "Intermediate",
   },
   {
@@ -69,7 +69,7 @@ const academyCourses = [
     description:
       "Protect systems and networks from digital threats and attacks.",
     icon: Shield,
-    duration: "10 Weeks",
+    duration: "12 Weeks",
     level: "Beginner",
   },
 ];
