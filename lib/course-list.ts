@@ -21,7 +21,7 @@ export const courseList = [
     name: "viek core",
     duration: "12 Weeks",
     tuitionFee: 100000,
-    discountedFee: 50000,
+    discountedFee: 10000,
     standardFee: 50000,
     foundingCohortFee: 35000,
     description:
@@ -62,7 +62,7 @@ export const courseList = [
     name: "ai & automation",
     duration: "12 Weeks",
     tuitionFee: 120000,
-    discountedFee: 60000,
+    discountedFee: 10000,
     standardFee: 60000,
     foundingCohortFee: 40000,
     description:
@@ -268,7 +268,7 @@ export const courseList = [
     name: "product design",
     duration: "12 Weeks",
     tuitionFee: 150000,
-    discountedFee: 75000,
+    discountedFee: 10000,
     standardFee: 75000,
     foundingCohortFee: 55000,
     description:
@@ -309,7 +309,7 @@ export const courseList = [
     name: "digital marketing",
     duration: "12 Weeks",
     tuitionFee: 120000,
-    discountedFee: 60000,
+    discountedFee: 10000,
     standardFee: 60000,
     foundingCohortFee: 45000,
     description:
@@ -433,7 +433,7 @@ export const courseList = [
     name: "virtual assistant",
     duration: "8 Weeks",
     tuitionFee: 40000,
-    discountedFee: 20000,
+    discountedFee: 10000,
     standardFee: 20000,
     foundingCohortFee: 15000,
     description:

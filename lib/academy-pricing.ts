@@ -15,7 +15,7 @@ export interface CoursePricing {
 export const coursePricing: Record<string, CoursePricing> = {
   "viek-core": {
     tuitionFeeNgn: 100000,
-    discountedFeeNgn: 50000,
+    discountedFeeNgn: 10000,
     standardFeeNgn: 50000,
     tuitionFeeUsd: 80,
     discountedFeeUsd: 40,
@@ -24,7 +24,7 @@ export const coursePricing: Record<string, CoursePricing> = {
   },
   "ai-automation": {
     tuitionFeeNgn: 120000,
-    discountedFeeNgn: 60000,
+    discountedFeeNgn: 10000,
     standardFeeNgn: 60000,
     tuitionFeeUsd: 100,
     discountedFeeUsd: 50,
@@ -69,7 +69,7 @@ export const coursePricing: Record<string, CoursePricing> = {
   },
   "product-design": {
     tuitionFeeNgn: 150000,
-    discountedFeeNgn: 75000,
+    discountedFeeNgn: 10000,
     standardFeeNgn: 75000,
     tuitionFeeUsd: 120,
     discountedFeeUsd: 60,
@@ -78,7 +78,7 @@ export const coursePricing: Record<string, CoursePricing> = {
   },
   "digital-marketing": {
     tuitionFeeNgn: 120000,
-    discountedFeeNgn: 60000,
+    discountedFeeNgn: 10000,
     standardFeeNgn: 60000,
     tuitionFeeUsd: 100,
     discountedFeeUsd: 50,
@@ -105,7 +105,7 @@ export const coursePricing: Record<string, CoursePricing> = {
   },
   "virtual-assistant": {
     tuitionFeeNgn: 40000,
-    discountedFeeNgn: 20000,
+    discountedFeeNgn: 10000,
     standardFeeNgn: 20000,
     tuitionFeeUsd: 40,
     discountedFeeUsd: 20,
